@@ -7,7 +7,9 @@ export default function Header() {
       <div className="w-[370px] h-[120px]  relative ">
         <Image src="/logo1.png" fill alt="logo" />
       </div>
-      <h1  className="text-4xl font-bold text-blue-600">Lakshmi Narain College of Technology, Indore</h1>
+      <h1 className="text-4xl font-bold text-blue-600">
+        Lakshmi Narain College of Technology (RIT), Indore
+      </h1>
     </div>
   );
 }
