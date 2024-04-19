@@ -1,6 +1,4 @@
 "use client";
-// components/FeedbackForm.js
-
 import React, { useState } from "react";
 
 const FeedStu = () => {
@@ -13,6 +11,7 @@ const FeedStu = () => {
     email: "",
     department: "",
     semester: "",
+    feedback: "", // Add feedback field to the form data
   });
 
   const handleChange = (e) => {
@@ -34,12 +33,13 @@ const FeedStu = () => {
       email: "",
       department: "",
       semester: "",
+      feedback: "", // Reset feedback field after submission
     });
   };
 
   return (
     <div className=" w-9/12  mx-auto mt-10   p-4 my-10">
-        <h1 className="my-4 text-3xl font-bold ">Student Feedback Form</h1>
+      <h1 className="my-4 text-3xl font-bold ">Student Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <div className=" p-3">
@@ -174,6 +174,22 @@ const FeedStu = () => {
               className="mt-1 block  outline-none border-b-2 border-black w-full rounded-md  shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
           </div>
+        </div>
+        <div className="p-3">
+          <label
+            htmlFor="feedback"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Feedback
+          </label>
+          <textarea
+            id="feedback"
+            name="feedback"
+            value={formData.feedback}
+            onChange={handleChange}
+            className="mt-1 block w-full outline-none border-b-2 border-black rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+            rows="4"
+          ></textarea>
         </div>
         <div>
           <button

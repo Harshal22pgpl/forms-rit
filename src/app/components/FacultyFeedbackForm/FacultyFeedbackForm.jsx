@@ -1,6 +1,5 @@
-"use client"
+"use client";
 // components/FacultyFeedbackForm.js
-
 import React, { useState } from "react";
 
 const FacultyFeedbackForm = () => {
@@ -13,6 +12,7 @@ const FacultyFeedbackForm = () => {
     email: "",
     qualification: "",
     employmentType: "",
+    feedback: "", // Add feedback field to the form data
   });
 
   const handleChange = (e) => {
@@ -34,6 +34,7 @@ const FacultyFeedbackForm = () => {
       email: "",
       qualification: "",
       employmentType: "",
+      feedback: "", // Reset feedback field after submission
     });
   };
 
@@ -181,6 +182,22 @@ const FacultyFeedbackForm = () => {
               <option value="contract">Contract</option>
             </select>
           </div>
+        </div>
+        <div className="p-3">
+          <label
+            htmlFor="feedback"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Feedback
+          </label>
+          <textarea
+            id="feedback"
+            name="feedback"
+            value={formData.feedback}
+            onChange={handleChange}
+            className="mt-1 block w-full outline-none border-b-2 border-black rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            rows="4"
+          ></textarea>
         </div>
         <div>
           <button
