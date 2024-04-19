@@ -1,6 +1,4 @@
 "use client";
-// components/AntiRaggingForm.js
-
 import React, { useState } from "react";
 
 const AntiRaggingForm = () => {
@@ -24,9 +22,15 @@ const AntiRaggingForm = () => {
     collegeAddress: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // Clear the error message if the field is not empty
+    if (value.trim() !== "") {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handleWitnessChange = (e) => {
@@ -46,30 +50,78 @@ const AntiRaggingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can add your logic to submit the form data
-    console.log(formData);
-    // Reset the form after submission
-    setFormData({
-      studentName: "",
-      studentId: "",
-      enrolledCourse: "",
-      phoneNo: "",
-      emailAddress: "",
-      incidentDetails: "",
-      witnesses: [],
-      perpetratorName: "",
-      actionsTaken: "",
-      motherName: "",
-      fatherName: "",
-      motherPhone: "",
-      fatherPhone: "",
-      motherEmail: "",
-      fatherEmail: "",
-      collegeName: "",
-      collegeAddress: "",
-    });
-  };
+    // Validate form fields before submission
+    const validationErrors = {};
+    // Define regex patterns for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+    const studentIdRegex = /^[a-zA-Z0-9]{12}$/;
 
+  
+    // Validate each field
+    if (formData.studentName.trim() === "") {
+      validationErrors.studentName = "Please enter student name.";
+    }
+    if (formData.studentId.trim() === "") {
+      validationErrors.studentId = "Please enter student ID.";
+    }else if (!studentIdRegex.test(formData.studentId.trim())) {
+      validationErrors.studentId = "Student Enroll number must be 12 digits long.";
+    }
+    if (formData.enrolledCourse.trim() === "") {
+      validationErrors.enrolledCourse = "Please enter enrolled course name.";
+    }
+    if (formData.phoneNo.trim() === "") {
+      validationErrors.phoneNo = "Please enter phone number.";
+    } else if (!phoneRegex.test(formData.phoneNo.trim())) {
+      validationErrors.phoneNo = "Phone number must be 10 digits long.";
+    }
+    if (!emailRegex.test(formData.emailAddress.trim())) {
+      validationErrors.emailAddress = "Please enter a valid email address.";
+    }
+    if (formData.motherName.trim() === "") {
+      validationErrors.motherName = "Please enter mother's name.";
+    }
+    if (formData.fatherName.trim() === "") {
+      validationErrors.fatherName = "Please enter father's name.";
+    }
+    if (formData.motherPhone.trim() === "") {
+      validationErrors.motherPhone = "Please enter mother's phone number.";
+    } else if (!phoneRegex.test(formData.motherPhone.trim())) {
+      validationErrors.motherPhone = "Phone number must be 10 digits long.";
+    }
+    if (formData.fatherPhone.trim() === "") {
+      validationErrors.fatherPhone = "Please enter father's phone number.";
+    } else if (!phoneRegex.test(formData.fatherPhone.trim())) {
+      validationErrors.fatherPhone = "Phone number must be 10 digits long.";
+    }
+    if (!emailRegex.test(formData.motherEmail.trim())) {
+      validationErrors.motherEmail = "Please enter a valid email address for mother.";
+    }
+    if (!emailRegex.test(formData.fatherEmail.trim())) {
+      validationErrors.fatherEmail = "Please enter a valid email address for father.";
+    }
+    if (formData.collegeName.trim() === "") {
+      validationErrors.collegeName = "Please enter college name.";
+    }
+    if (formData.collegeAddress.trim() === "") {
+      validationErrors.collegeAddress = "Please enter college address.";
+    }
+    if (formData.incidentDetails.trim() === "") {
+      validationErrors.incidentDetails = "Please provide incident details.";
+    }
+    // Add validation for other fields
+  
+    // Update errors state with validation results
+    setErrors(validationErrors);
+  
+    // If there are no validation errors, submit the form
+    if (Object.keys(validationErrors).length === 0) {
+      console.log(formData);
+      // Reset the form after submission
+      setFormData({ ...initialFormData });
+    }
+  };
+  
   return (
     <div className=" w-10/12 mx-auto mt-10 p-8 my-10 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="my-4 text-3xl font-bold text-center text-red-700">
@@ -92,6 +144,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+              {errors.studentName && (
+              <p className="text-red-500">{errors.studentName}</p>
+            )}
           </div>
           <div>
             <label
@@ -108,6 +163,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.studentId && (
+              <p className="text-red-500">{errors.studentId}</p>
+            )}
           </div>
           <div>
             <label
@@ -124,6 +182,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.enrolledCourse && (
+              <p className="text-red-500">{errors.enrolledCourse}</p>
+            )}
           </div>
           <div>
             <label
@@ -140,6 +201,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.phoneNo && (
+              <p className="text-red-500">{errors.phoneNo}</p>
+            )}
           </div>
           <div>
             <label
@@ -156,6 +220,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.emailAddress && (
+              <p className="text-red-500">{errors.emailAddress}</p>
+            )}
           </div>
 
           <div>
@@ -173,6 +240,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.motherName && (
+              <p className="text-red-500">{errors.motherName}</p>
+            )}
           </div>
           <div>
             <label
@@ -189,6 +259,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.fatherName && (
+              <p className="text-red-500">{errors.fatherName}</p>
+            )}
           </div>
           <div>
             <label
@@ -205,6 +278,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.motherPhone && (
+              <p className="text-red-500">{errors.motherPhone}</p>
+            )}
           </div>
           <div>
             <label
@@ -221,6 +297,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.fatherPhone && (
+              <p className="text-red-500">{errors.fatherPhone}</p>
+            )}
           </div>
           <div>
             <label
@@ -237,6 +316,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.motherEmail && (
+              <p className="text-red-500">{errors.motherEmail}</p>
+            )}
           </div>
           <div>
             <label
@@ -253,6 +335,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.fatherEmail && (
+              <p className="text-red-500">{errors.fatherEmail}</p>
+            )}
           </div>
           <div>
             <label
@@ -269,6 +354,9 @@ const AntiRaggingForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             />
+               {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
+            )}
           </div>
           <div>
             <label
@@ -285,6 +373,9 @@ const AntiRaggingForm = () => {
               rows="4"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             ></textarea>
+               {errors.collegeAddress && (
+              <p className="text-red-500">{errors.collegeAddress}</p>
+            )}
           </div>
           <div>
             <label
@@ -301,6 +392,9 @@ const AntiRaggingForm = () => {
               rows="4"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
             ></textarea>
+               {errors.incidentDetails && (
+              <p className="text-red-500">{errors.incidentDetails}</p>
+            )}
           </div>
         </div>
         <div>
