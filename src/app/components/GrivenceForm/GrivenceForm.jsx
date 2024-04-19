@@ -1,9 +1,8 @@
 "use client";
 // components/GrievanceForm.js
-
 import React, { useState } from "react";
 
-const GrivenceForm = () => {
+const GrievanceForm = () => {
   const [formData, setFormData] = useState({
     studentName: "",
     studentId: "",
@@ -14,9 +13,14 @@ const GrivenceForm = () => {
     elaborateGrievance: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
+    // Clear the corresponding error message when the user inputs something in a field
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleCheckboxChange = (e) => {
@@ -36,18 +40,56 @@ const GrivenceForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can add your logic to submit the form data
-    console.log(formData);
-    // Reset the form after submission
-    setFormData({
-      studentName: "",
-      studentId: "",
-      enrolledCourse: "",
-      phoneNo: "",
-      emailAddress: "",
-      grievanceType: [],
-      elaborateGrievance: "",
-    });
+    // Validate form fields before submission
+    const validationErrors = {};
+    // Define regex patterns for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/; // Regex for 10-digit phone number
+    const studentIdRegex = /^[a-zA-Z0-9]{12}$/;
+    // Validate each field
+    if (formData.studentName.trim() === "") {
+      validationErrors.studentName = "Please enter student name.";
+    }
+    if (formData.studentId.trim() === "") {
+      validationErrors.studentId = "Please enter student ID.";
+    }else if (!studentIdRegex.test(formData.studentId.trim())) {
+      validationErrors.studentId = "Student Enroll number must be 12 digits long.";
+    }
+    if (formData.enrolledCourse.trim() === "") {
+      validationErrors.enrolledCourse = "Please enter enrolled course name.";
+    }
+    if (formData.phoneNo.trim() === "") {
+      validationErrors.phoneNo = "Please enter phone number.";
+    } else if (!phoneRegex.test(formData.phoneNo.trim())) {
+      validationErrors.phoneNo = "Phone number must be 10 digits long.";
+    }
+    if (!emailRegex.test(formData.emailAddress.trim())) {
+      validationErrors.emailAddress = "Please enter a valid email address.";
+    }
+    if (formData.grievanceType.length === 0) {
+      validationErrors.grievanceType = "Please select at least one grievance type.";
+    }
+    if (formData.elaborateGrievance.trim() === "") {
+      validationErrors.elaborateGrievance = "Please elaborate your grievance.";
+    }
+    
+    // Update errors state with validation results
+    setErrors(validationErrors);
+    
+    // If there are no validation errors, submit the form
+    if (Object.keys(validationErrors).length === 0) {
+      console.log(formData);
+      // Reset the form after submission
+      setFormData({
+        studentName: "",
+        studentId: "",
+        enrolledCourse: "",
+        phoneNo: "",
+        emailAddress: "",
+        grievanceType: [],
+        elaborateGrievance: "",
+      });
+    }
   };
 
   return (
@@ -57,6 +99,7 @@ const GrivenceForm = () => {
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-4">
+          {/* Student Name */}
           <div>
             <label
               htmlFor="studentName"
@@ -72,7 +115,11 @@ const GrivenceForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
+            {errors.studentName && (
+              <p className="text-red-500">{errors.studentName}</p>
+            )}
           </div>
+          {/* Student ID No */}
           <div>
             <label
               htmlFor="studentId"
@@ -88,7 +135,11 @@ const GrivenceForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
+            {errors.studentId && (
+              <p className="text-red-500">{errors.studentId}</p>
+            )}
           </div>
+          {/* Enrolled Course Name */}
           <div>
             <label
               htmlFor="enrolledCourse"
@@ -104,7 +155,11 @@ const GrivenceForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
+            {errors.enrolledCourse && (
+              <p className="text-red-500">{errors.enrolledCourse}</p>
+            )}
           </div>
+          {/* Phone No */}
           <div>
             <label
               htmlFor="phoneNo"
@@ -120,7 +175,11 @@ const GrivenceForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
+            {errors.phoneNo && (
+              <p className="text-red-500">{errors.phoneNo}</p>
+            )}
           </div>
+          {/* Email Address */}
           <div>
             <label
               htmlFor="emailAddress"
@@ -136,9 +195,13 @@ const GrivenceForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
+            {errors.emailAddress && (
+              <p className="text-red-500">{errors.emailAddress}</p>
+            )}
           </div>
-          
-            <label className="block text-sm font-medium text-gray-700">
+          {/* Type of Grievance */}
+          <div>
+          <label className="block text-sm font-medium text-gray-700">
               Type of Grievance
             </label>
             
@@ -223,7 +286,11 @@ const GrivenceForm = () => {
               {/* Add more checkboxes for other grievance types */}
             </div>
           
-        
+            {errors.grievanceType && (
+              <p className="text-red-500">{errors.grievanceType}</p>
+            )}
+          </div>
+          {/* Elaborate your grievance */}
           <div>
             <label
               htmlFor="elaborateGrievance"
@@ -239,8 +306,12 @@ const GrivenceForm = () => {
               rows="4"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             ></textarea>
+            {errors.elaborateGrievance && (
+              <p className="text-red-500">{errors.elaborateGrievance}</p>
+            )}
           </div>
         </div>
+        {/* Submit Button */}
         <div>
           <button
             type="submit"
@@ -254,4 +325,4 @@ const GrivenceForm = () => {
   );
 };
 
-export default GrivenceForm;
+export default GrievanceForm;
