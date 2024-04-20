@@ -6,7 +6,7 @@ const FeedStu = () => {
     studentId: "",
     name: "",
     gender: "",
-    adhaarNumber: "",
+  
     mobileNumber: "",
     email: "",
     department: "",
@@ -98,7 +98,7 @@ const FeedStu = () => {
               htmlFor="studentId"
               className="block text-sm font-medium text-gray-700"
             >
-              Student ID
+             Enrollment Number
             </label>
             <input
               type="text"
@@ -156,28 +156,8 @@ const FeedStu = () => {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
-          {/* Aadhar Number */}
-          <div className="p-3">
-            <label
-              htmlFor="adhaarNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Aadhar Number
-            </label>
-            <input
-              type="text"
-              name="adhaarNumber"
-              id="adhaarNumber"
-              value={formData.adhaarNumber}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-            />
-            {errors.adhaarNumber && (
-              <p className="text-red-500">{errors.adhaarNumber}</p>
-            )}
-          </div>
-          {/* Mobile Number */}
-          <div className="p-3">
+         
+          <div className=" p-3">
             <label
               htmlFor="mobileNumber"
               className="block text-sm font-medium text-gray-700"

@@ -3,10 +3,10 @@ import React, { useState } from "react";
 
 const FacultyFeedbackForm = () => {
   const [formData, setFormData] = useState({
-    facultyId: "",
+  
     facultyName: "",
     gender: "",
-    adhaarNumber: "",
+   
     mobileNumber: "",
     email: "",
     qualification: "",
@@ -92,27 +92,7 @@ const FacultyFeedbackForm = () => {
       <h1 className="my-4 text-3xl font-bold">Faculty Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          {/* Faculty ID */}
-          <div className="p-3">
-            <label
-              htmlFor="facultyId"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Faculty ID
-            </label>
-            <input
-              type="text"
-              name="facultyId"
-              id="facultyId"
-              value={formData.facultyId}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
-            />
-            {errors.facultyId && (
-              <p className="text-red-500">{errors.facultyId}</p>
-            )}
-          </div>
-          {/* Faculty Name */}
+         
           <div className="p-3">
             <label
               htmlFor="facultyName"
@@ -156,27 +136,7 @@ const FacultyFeedbackForm = () => {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
-          {/* Aadhar Number */}
-          <div className="p-3">
-            <label
-              htmlFor="adhaarNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Aadhar Number
-            </label>
-            <input
-              type="text"
-              name="adhaarNumber"
-              id="adhaarNumber"
-              value={formData.adhaarNumber}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
-            />
-            {errors.adhaarNumber && (
-              <p className="text-red-500">{errors.adhaarNumber}</p>
-            )}
-          </div>
-          {/* Mobile Number */}
+       
           <div className="p-3">
             <label
               htmlFor="mobileNumber"
@@ -258,6 +218,7 @@ const FacultyFeedbackForm = () => {
               <option value="">Select Employment Type</option>
               <option value="regular">Regular</option>
               <option value="contract">Contract</option>
+              <option value="guest">Guest Lecturer</option>
             </select>
             {errors.employmentType && (
               <p className="text-red-500">{errors.employmentType}</p>
