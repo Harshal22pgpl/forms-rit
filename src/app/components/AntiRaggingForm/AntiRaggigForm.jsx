@@ -11,16 +11,16 @@ const AntiRaggingForm = () => {
     emailAddress: "",
     incidentDetails: "",
     witnesses: [],
-    perpetratorName: "",
-    actionsTaken: "",
-    motherName: "",
-    fatherName: "",
-    motherPhone: "",
-    fatherPhone: "",
-    motherEmail: "",
-    fatherEmail: "",
-    collegeName: "",
-    collegeAddress: "",
+   
+    
+   
+    parentName: "",
+   
+    parentPhone: "",
+   
+    parentEmail: "",
+  
+   
   });
   const searchParams = useSearchParams()
   const [errors, setErrors] = useState({});
@@ -155,7 +155,7 @@ console.log(search);
               htmlFor="studentId"
               className="block text-sm font-medium text-gray-700"
             >
-              Student ID No
+             Erollment No
             </label>
             <input
               type="text"
@@ -227,31 +227,13 @@ console.log(search);
             )}
           </div>
 
-          <div>
-            <label
-              htmlFor="motherName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Mother&apos;s Name
-            </label>
-            <input
-              type="text"
-              name="motherName"
-              id="motherName"
-              value={formData.motherName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.motherName && (
-              <p className="text-red-500">{errors.motherName}</p>
-            )}
-          </div>
+        
           <div>
             <label
               htmlFor="fatherName"
               className="block text-sm font-medium text-gray-700"
             >
-              Father&apos;s Name
+              Parent&apos;s Name
             </label>
             <input
               type="text"
@@ -265,31 +247,13 @@ console.log(search);
               <p className="text-red-500">{errors.fatherName}</p>
             )}
           </div>
-          <div>
-            <label
-              htmlFor="motherPhone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Mother&apos;s Phone
-            </label>
-            <input
-              type="text"
-              name="motherPhone"
-              id="motherPhone"
-              value={formData.motherPhone}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.motherPhone && (
-              <p className="text-red-500">{errors.motherPhone}</p>
-            )}
-          </div>
+         
           <div>
             <label
               htmlFor="fatherPhone"
               className="block text-sm font-medium text-gray-700"
             >
-              Father&apos;s Phone
+              Parent&apos;s Phone
             </label>
             <input
               type="text"
@@ -303,31 +267,13 @@ console.log(search);
               <p className="text-red-500">{errors.fatherPhone}</p>
             )}
           </div>
-          <div>
-            <label
-              htmlFor="motherEmail"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Mother&apos;s Email
-            </label>
-            <input
-              type="email"
-              name="motherEmail"
-              id="motherEmail"
-              value={formData.motherEmail}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.motherEmail && (
-              <p className="text-red-500">{errors.motherEmail}</p>
-            )}
-          </div>
+         
           <div>
             <label
               htmlFor="fatherEmail"
               className="block text-sm font-medium text-gray-700"
             >
-              Father&apos;s Email
+              Parent&apos;s Email
             </label>
             <input
               type="email"
@@ -341,44 +287,8 @@ console.log(search);
               <p className="text-red-500">{errors.fatherEmail}</p>
             )}
           </div>
-          <div>
-            <label
-              htmlFor="collegeName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              College Name
-            </label>
-            <input
-              type="text"
-              name="collegeName"
-              id="collegeName"
-              value={formData.collegeName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.collegeName && (
-              <p className="text-red-500">{errors.collegeName}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="collegeAddress"
-              className="block text-sm font-medium text-gray-700"
-            >
-              College Address
-            </label>
-            <textarea
-              name="collegeAddress"
-              id="collegeAddress"
-              value={formData.collegeAddress}
-              onChange={handleChange}
-              rows="4"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            ></textarea>
-               {errors.collegeAddress && (
-              <p className="text-red-500">{errors.collegeAddress}</p>
-            )}
-          </div>
+        
+         
           <div>
             <label
               htmlFor="incidentDetails"
@@ -426,17 +336,7 @@ console.log(search);
               />
               <span className="ml-2 text-gray-700">Teacher</span>
             </label>
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                name="witnesses"
-                value="Neighbor"
-                checked={formData.witnesses.includes("Neighbor")}
-                onChange={handleWitnessChange}
-                className="form-checkbox h-5 w-5 text-red-600"
-              />
-              <span className="ml-2 text-gray-700">Neighbor</span>
-            </label>
+           
             <label className="inline-flex items-center">
               <input
                 type="checkbox"

@@ -106,7 +106,9 @@ const FeedStu = () => {
               htmlFor="enrollmentUuid"
               className="block text-sm font-medium text-gray-700"
             >
+
               Enrollment UUID
+
             </label>
             <input
               type="text"
@@ -164,6 +166,7 @@ const FeedStu = () => {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
+
           {/* Phone */}
           <div className="p-3">
             <label
@@ -186,6 +189,7 @@ const FeedStu = () => {
           </div>
           {/* Email */}
           <div className="p-3">
+
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"

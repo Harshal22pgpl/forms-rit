@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { postFaculty } from "@/lib/services/facultyFeedback/facultyFeedback";
 import { FACULTY } from "@/lib/constants/index";
 const FacultyFeedbackForm = () => {
+
   const [formData, setFormData] = useState(FACULTY)
    
+
 
   const [errors, setErrors] = useState({});
 
@@ -84,6 +86,7 @@ if (formData.feedback.trim() === "") {
       <h1 className="my-4 text-3xl font-bold">Faculty Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
+
           {/* Faculty UUID */}
           <div className="p-3">
             <label
@@ -105,6 +108,7 @@ if (formData.feedback.trim() === "") {
             )}
           </div>
           {/* Faculty Name */}
+
           <div className="p-3">
             <label
               htmlFor="name"
@@ -148,6 +152,7 @@ if (formData.feedback.trim() === "") {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
+
           {/* Aadhar Number */}
           <div className="p-3">
             <label
@@ -169,6 +174,7 @@ if (formData.feedback.trim() === "") {
             )}
           </div>
           {/* Mobile Number */}
+
           <div className="p-3">
             <label
               htmlFor="phone"
@@ -250,6 +256,7 @@ if (formData.feedback.trim() === "") {
               <option value="">Select Employment Type</option>
               <option value="regular">Regular</option>
               <option value="contract">Contract</option>
+              <option value="guest">Guest Lecturer</option>
             </select>
             {errors.typeOfEmployment && (
               <p className="text-red-500">{errors.typeOfEmployment}</p>

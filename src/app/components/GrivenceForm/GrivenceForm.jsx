@@ -125,7 +125,7 @@ const GrievanceForm = () => {
               htmlFor="studentId"
               className="block text-sm font-medium text-gray-700"
             >
-              Student ID No
+              Enrollment Number
             </label>
             <input
               type="text"
