@@ -1,69 +1,70 @@
 "use client";
 import React, { useState } from "react";
+import { scrollToTop } from "@/lib/helpers/scrollToTop";
+import { postStudent } from "@/lib/services/studentFeedback/studentFeedback";
 
 const FeedStu = () => {
-  const [formData, setFormData] = useState({
-    studentId: "",
+  const STUDENT = {
+    enrollmentUuid: "",
     name: "",
-    gender: "",
-    adhaarNumber: "",
-    mobileNumber: "",
     email: "",
+    phone: "",
+    gender: "",
     department: "",
     semester: "",
-    feedback: "", // Add feedback field to the form data
-  });
+    feedback: "",
+    collegeName: "" // Add collegeName field to the form data
+  };
 
+  const [studentData, setStudentData] = useState(STUDENT);
+  const [hasError, setError] = useState({ msg: "", type: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    setError({ msg: "", type: "" });
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    
-    // Clear the corresponding error message when the user inputs something in a field
-    setErrors({ ...errors, [name]: "" });
+    setStudentData({ ...studentData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     // Validate form fields before submission
     const validationErrors = {};
     // Define regex patterns for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
-    const adhaarNumberRegex = /^[a-zA-Z0-9]{12}$/; // Regex for Aadhar Number
     
     // Validate each field
-    if (formData.studentId.trim() === "") {
-      validationErrors.studentId = "Please enter student ID.";
+    if (studentData.enrollmentUuid.trim() === "") {
+      validationErrors.enrollmentUuid = "Please enter enrollment UUID.";
     }
-    if (formData.name.trim() === "") {
+    if (studentData.name.trim() === "") {
       validationErrors.name = "Please enter student name.";
     }
-    if (formData.gender.trim() === "") {
+    if (studentData.gender.trim() === "") {
       validationErrors.gender = "Please select gender.";
     }
-    if (formData.adhaarNumber.trim() === "") {
-      validationErrors.adhaarNumber = "Please enter Aadhar number.";
-    } else if (!adhaarNumberRegex.test(formData.adhaarNumber.trim())) {
-      validationErrors.adhaarNumber = "Aadhar number must be 12 characters long and alphanumeric.";
+    if (studentData.phone.trim() === "") {
+      validationErrors.phone = "Please enter phone number.";
+    } else if (!phoneRegex.test(studentData.phone.trim())) {
+      validationErrors.phone = "Phone number must be 10 digits long.";
     }
-    if (formData.mobileNumber.trim() === "") {
-      validationErrors.mobileNumber = "Please enter mobile number.";
-    } else if (!phoneRegex.test(formData.mobileNumber.trim())) {
-      validationErrors.mobileNumber = "Mobile number must be 10 digits long.";
-    }
-    if (!emailRegex.test(formData.email.trim())) {
+    if (!emailRegex.test(studentData.email.trim())) {
       validationErrors.email = "Please enter a valid email address.";
     }
-    if (formData.department.trim() === "") {
+    if (studentData.department.trim() === "") {
       validationErrors.department = "Please enter department.";
     }
-    if (formData.semester.trim() === "") {
+    if (studentData.semester.trim() === "") {
       validationErrors.semester = "Please enter semester.";
     }
-    if (formData.feedback.trim() === "") {
+    if (studentData.feedback.trim() === "") {
       validationErrors.feedback = "Please provide feedback.";
+    }
+    if (studentData.collegeName.trim() === "") {
+      validationErrors.collegeName = "Please enter college name.";
     }
     
     // Update errors state with validation results
@@ -71,19 +72,26 @@ const FeedStu = () => {
     
     // If there are no validation errors, submit the form
     if (Object.keys(validationErrors).length === 0) {
-      console.log(formData);
-      // Reset the form after submission
-      setFormData({
-        studentId: "",
-        name: "",
-        gender: "",
-        adhaarNumber: "",
-        mobileNumber: "",
-        email: "",
-        department: "",
-        semester: "",
-        feedback: "", // Reset feedback field after submission
-      });
+      try {
+        setIsLoading(true);
+        // Implement the postStudent function to post student data to the server
+        const res = await postStudent(studentData);
+        if (res) {
+          setIsLoading(false);
+          setError({
+            msg: SUCCESS_MSG(studentData.name),
+            type: "success",
+          });
+          setStudentData(STUDENT); // Reset the form after successful submission
+          scrollToTop();
+        }
+      } catch (error) {
+        setIsLoading(false);
+        // Handle error appropriately
+      }
+    } else {
+      scrollToTop();
+      setError({ msg: "Please fix the errors in the form.", type: "error" });
     }
   };
 
@@ -92,24 +100,24 @@ const FeedStu = () => {
       <h1 className="my-4 text-3xl font-bold">Student Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          {/* Student ID */}
+          {/* Enrollment UUID */}
           <div className="p-3">
             <label
-              htmlFor="studentId"
+              htmlFor="enrollmentUuid"
               className="block text-sm font-medium text-gray-700"
             >
-              Student ID
+              Enrollment UUID
             </label>
             <input
               type="text"
-              name="studentId"
-              id="studentId"
-              value={formData.studentId}
+              name="enrollmentUuid"
+              id="enrollmentUuid"
+              value={studentData.enrollmentUuid}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.studentId && (
-              <p className="text-red-500">{errors.studentId}</p>
+            {errors.enrollmentUuid && (
+              <p className="text-red-500">{errors.enrollmentUuid}</p>
             )}
           </div>
           {/* Name */}
@@ -124,7 +132,7 @@ const FeedStu = () => {
               type="text"
               name="name"
               id="name"
-              value={formData.name}
+              value={studentData.name}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
@@ -143,7 +151,7 @@ const FeedStu = () => {
             <select
               id="gender"
               name="gender"
-              value={formData.gender}
+              value={studentData.gender}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm rounded-md"
             >
@@ -156,85 +164,68 @@ const FeedStu = () => {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
-          {/* Aadhar Number */}
+          {/* Phone */}
           <div className="p-3">
             <label
-              htmlFor="adhaarNumber"
+              htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
-              Aadhar Number
+              Phone
             </label>
             <input
               type="text"
-              name="adhaarNumber"
-              id="adhaarNumber"
-              value={formData.adhaarNumber}
+              name="phone"
+              id="phone"
+              value={studentData.phone}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.adhaarNumber && (
-              <p className="text-red-500">{errors.adhaarNumber}</p>
+            {errors.phone && (
+              <p className="text-red-500">{errors.phone}</p>
             )}
           </div>
-          {/* Mobile Number */}
+          {/* Email */}
           <div className="p-3">
-            <label
-              htmlFor="mobileNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Mobile Number
-            </label>
-            <input
-              type="text"
-              name="mobileNumber"
-              id="mobileNumber"
-              value={formData.mobileNumber}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-            />
-            {errors.mobileNumber && (
-              <p className="text-red-500">{errors.mobileNumber}</p>
-            )}
-          </div>
-          <div className=" p-3">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Email Address
+              Email
             </label>
             <input
               type="email"
               name="email"
               id="email"
-              value={formData.email}
+              value={studentData.email}
               onChange={handleChange}
-              className="mt-1 block  outline-none border-b-2 border-black w-full rounded-md  shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
-              {errors.email && (
+            {errors.email && (
               <p className="text-red-500">{errors.email}</p>
             )}
           </div>
-          <div className=" p-3">
+          {/* Department */}
+          <div className="p-3">
             <label
               htmlFor="department"
               className="block text-sm font-medium text-gray-700"
             >
-              Department (Branch)
+              Department
             </label>
             <input
               type="text"
               name="department"
               id="department"
-              value={formData.department}
+              value={studentData.department}
               onChange={handleChange}
-              className="mt-1 block  outline-none border-b-2 border-black w-full rounded-md  shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
-              {errors.department && (
+            {errors.department && (
               <p className="text-red-500">{errors.department}</p>
             )}
           </div>
-          <div className=" p-3">
+          {/* Semester */}
+          <div className="p-3">
             <label
               htmlFor="semester"
               className="block text-sm font-medium text-gray-700"
@@ -245,38 +236,60 @@ const FeedStu = () => {
               type="text"
               name="semester"
               id="semester"
-              value={formData.semester}
+              value={studentData.semester}
               onChange={handleChange}
-              className="mt-1 block  outline-none border-b-2 border-black w-full rounded-md  shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
             />
-              {errors.semester && (
+            {errors.semester && (
               <p className="text-red-500">{errors.semester}</p>
+            )}
+          </div>
+          {/* Feedback */}
+          <div className="p-3">
+            <label
+              htmlFor="feedback"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Feedback
+            </label>
+            <textarea
+              id="feedback"
+              name="feedback"
+              value={studentData.feedback}
+              onChange={handleChange}
+              className="mt-1 block w-full outline-none border-b-2 border-black rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+              rows="4"
+            ></textarea>
+              {errors.feedback && (
+                <p className="text-red-500">{errors.feedback}</p>
+              )}
+          </div>
+          {/* College Name */}
+          <div className="p-3">
+            <label
+              htmlFor="collegeName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              College Name
+            </label>
+            <input
+              type="text"
+              name="collegeName"
+              id="collegeName"
+              value={studentData.collegeName}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
             )}
           </div>
         </div>
         <div className="p-3">
-          <label
-            htmlFor="feedback"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Feedback
-          </label>
-          <textarea
-            id="feedback"
-            name="feedback"
-            value={formData.feedback}
-            onChange={handleChange}
-            className="mt-1 block w-full outline-none border-b-2 border-black rounded-md shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-            rows="4"
-          ></textarea>
-            {errors.feedback && (
-              <p className="text-red-500">{errors.feedback}</p>
-            )}
-        </div>
-        <div>
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            onSubmit={handleSubmit}
           >
             Submit
           </button>
@@ -286,4 +299,4 @@ const FeedStu = () => {
   );
 };
 
-export default FeedStu;
+export default FeedStu
