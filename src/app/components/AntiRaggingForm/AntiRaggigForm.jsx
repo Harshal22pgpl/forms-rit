@@ -24,9 +24,7 @@ const AntiRaggingForm = () => {
   });
  
   const [errors, setErrors] = useState({});
-  const searchParams = typeof window !== 'undefined' ? useSearchParams() : null;
-  const search = searchParams ? searchParams.get('college') : null;
-  console.log(search);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
