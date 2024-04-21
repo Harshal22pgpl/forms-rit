@@ -1,18 +1,12 @@
-"use client";
+'use client'
 import React, { useState } from "react";
-
+import { postFaculty } from "@/lib/services/facultyFeedback/facultyFeedback";
+import { FACULTY } from "@/lib/constants/index";
 const FacultyFeedbackForm = () => {
-  const [formData, setFormData] = useState({
-  
-    facultyName: "",
-    gender: "",
+
+  const [formData, setFormData] = useState(FACULTY)
    
-    mobileNumber: "",
-    email: "",
-    qualification: "",
-    employmentType: "",
-    feedback: "", // Add feedback field to the form data
-  });
+
 
   const [errors, setErrors] = useState({});
 
@@ -24,7 +18,7 @@ const FacultyFeedbackForm = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate form fields before submission
     const validationErrors = {};
@@ -34,82 +28,104 @@ const FacultyFeedbackForm = () => {
     const aadharNumberRegex = /^[a-zA-Z0-9]{12}$/; // Regex for Aadhar Number
     
     // Validate each field
-    if (formData.facultyId.trim() === "") {
-      validationErrors.facultyId = "Please enter faculty ID.";
-    }
-    if (formData.facultyName.trim() === "") {
-      validationErrors.facultyName = "Please enter faculty name.";
-    }
-    if (formData.gender.trim() === "") {
-      validationErrors.gender = "Please select gender.";
-    }
-    if (formData.adhaarNumber.trim() === "") {
-      validationErrors.adhaarNumber = "Please enter Aadhar number.";
-    } else if (!aadharNumberRegex.test(formData.adhaarNumber.trim())) {
-      validationErrors.adhaarNumber = "Aadhar number must be 12 characters long and alphanumeric.";
-    }
-    if (formData.mobileNumber.trim() === "") {
-      validationErrors.mobileNumber = "Please enter mobile number.";
-    } else if (!phoneRegex.test(formData.mobileNumber.trim())) {
-      validationErrors.mobileNumber = "Mobile number must be 10 digits long.";
-    }
-    if (!emailRegex.test(formData.email.trim())) {
-      validationErrors.email = "Please enter a valid email address.";
-    }
-    if (formData.qualification.trim() === "") {
-      validationErrors.qualification = "Please select qualification.";
-    }
-    if (formData.employmentType.trim() === "") {
-      validationErrors.employmentType = "Please select employment type.";
-    }
-    if (formData.feedback.trim() === "") {
-      validationErrors.feedback = "Please provide feedback.";
-    }
+   // Validate each field
+if (formData.facultyUuid.trim() === "") {
+  validationErrors.facultyUuid = "Please enter faculty ID.";
+}
+if (formData.name.trim() === "") {
+  validationErrors.name = "Please enter faculty name.";
+}
+if (formData.gender.trim() === "") {
+  validationErrors.gender = "Please select gender.";
+}
+if (formData.aadharNumber && formData.aadharNumber.trim() === "") { // Check if formData.aadharNumber exists before calling trim
+  validationErrors.aadharNumber = "Please enter Aadhar number.";
+} else if (formData.aadharNumber && !aadharNumberRegex.test(formData.aadharNumber.trim())) { // Check if formData.aadharNumber exists before calling trim
+  validationErrors.aadharNumber = "Aadhar number must be 12 characters long and alphanumeric.";
+}
+if (formData.phone.trim() === "") {
+  validationErrors.phone = "Please enter mobile number.";
+} else if (!phoneRegex.test(formData.phone.trim())) {
+  validationErrors.phone = "Mobile number must be 10 digits long.";
+}
+if (!emailRegex.test(formData.email.trim())) {
+  validationErrors.email = "Please enter a valid email address.";
+}
+if (formData.qualification.trim() === "") {
+  validationErrors.qualification = "Please select qualification.";
+}
+if (formData.typeOfEmployment.trim() === "") {
+  validationErrors.typeOfEmployment = "Please select employment type.";
+}
+if (formData.feedback.trim() === "") {
+  validationErrors.feedback = "Please provide feedback.";
+}
+
     
     // Update errors state with validation results
     setErrors(validationErrors);
-    
-    // If there are no validation errors, submit the form
     if (Object.keys(validationErrors).length === 0) {
-      console.log(formData);
-      // Reset the form after submission
-      setFormData({
-        facultyId: "",
-        facultyName: "",
-        gender: "",
-        adhaarNumber: "",
-        mobileNumber: "",
-        email: "",
-        qualification: "",
-        employmentType: "",
-        feedback: "", // Reset feedback field after submission
-      });
+      try {
+        // Call API to post faculty feedback
+        const res = await postFaculty(formData);
+        console.log(res); // Handle API response as needed
+
+        // Reset the form after submission
+        setFormData(FACULTY); // Reset form data to initial state
+      } catch (error) {
+        console.error("Error posting faculty feedback:", error);
+        // Handle error appropriately
+      }
     }
-  };
+  
+    // If there are no validation errors, submit the form
+  }
 
   return (
     <div className="w-9/12 mx-auto mt-10 p-4 my-10">
       <h1 className="my-4 text-3xl font-bold">Faculty Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-         
+
+          {/* Faculty UUID */}
           <div className="p-3">
             <label
-              htmlFor="facultyName"
+              htmlFor="facultyUuid"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Faculty UUID
+            </label>
+            <input
+              type="text"
+              name="facultyUuid"
+              id="facultyUuid"
+              value={formData.facultyUuid}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.facultyUuid && (
+              <p className="text-red-500">{errors.facultyUuid}</p>
+            )}
+          </div>
+          {/* Faculty Name */}
+
+          <div className="p-3">
+            <label
+              htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
               Faculty Name
             </label>
             <input
               type="text"
-              name="facultyName"
-              id="facultyName"
-              value={formData.facultyName}
+              name="name"
+              id="name"
+              value={formData.name}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
             />
-            {errors.facultyName && (
-              <p className="text-red-500">{errors.facultyName}</p>
+            {errors.name && (
+              <p className="text-red-500">{errors.name}</p>
             )}
           </div>
           {/* Gender */}
@@ -136,24 +152,46 @@ const FacultyFeedbackForm = () => {
               <p className="text-red-500">{errors.gender}</p>
             )}
           </div>
-       
+
+          {/* Aadhar Number */}
           <div className="p-3">
             <label
-              htmlFor="mobileNumber"
+              htmlFor="aadharNumber"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Aadhar Number
+            </label>
+            <input
+              type="text"
+              name="aadharNumber"
+              id="aadharNumber"
+              value={formData.aadharNumber}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.aadharNumber && (
+              <p className="text-red-500">{errors.aadharNumber}</p>
+            )}
+          </div>
+          {/* Mobile Number */}
+
+          <div className="p-3">
+            <label
+              htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
               Mobile Number
             </label>
             <input
               type="text"
-              name="mobileNumber"
-              id="mobileNumber"
-              value={formData.mobileNumber}
+              name="phone"
+              id="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
             />
-            {errors.mobileNumber && (
-              <p className="text-red-500">{errors.mobileNumber}</p>
+            {errors.phone && (
+              <p className="text-red-500">{errors.phone}</p>
             )}
           </div>
           {/* Email Address */}
@@ -203,15 +241,15 @@ const FacultyFeedbackForm = () => {
           {/* Employment Type */}
           <div className="p-3">
             <label
-              htmlFor="employmentType"
+              htmlFor="typeOfEmployment"
               className="block text-sm font-medium text-gray-700"
             >
               Type of Employment
             </label>
             <select
-              id="employmentType"
-              name="employmentType"
-              value={formData.employmentType}
+              id="typeOfEmployment"
+              name="typeOfEmployment"
+              value={formData.typeOfEmployment}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
             >
@@ -220,8 +258,8 @@ const FacultyFeedbackForm = () => {
               <option value="contract">Contract</option>
               <option value="guest">Guest Lecturer</option>
             </select>
-            {errors.employmentType && (
-              <p className="text-red-500">{errors.employmentType}</p>
+            {errors.typeOfEmployment && (
+              <p className="text-red-500">{errors.typeOfEmployment}</p>
             )}
           </div>
         </div>

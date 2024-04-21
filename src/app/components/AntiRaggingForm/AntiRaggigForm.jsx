@@ -1,4 +1,5 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 const AntiRaggingForm = () => {
@@ -21,9 +22,10 @@ const AntiRaggingForm = () => {
   
    
   });
-
+  const searchParams = useSearchParams()
   const [errors, setErrors] = useState({});
-
+  const search = searchParams.get('college')
+console.log(search);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
