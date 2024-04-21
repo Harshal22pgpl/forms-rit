@@ -22,10 +22,9 @@ const AntiRaggingForm = () => {
   
    
   });
-  const searchParams = useSearchParams()
+ 
   const [errors, setErrors] = useState({});
-  const search = searchParams.get('college')
-console.log(search);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -125,6 +124,7 @@ console.log(search);
   };
   
   return (
+
     <div className=" w-10/12 mx-auto mt-10 p-8 my-10 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="my-4 text-3xl font-bold text-center text-red-700">
         Anti-Ragging Form
@@ -394,6 +394,7 @@ console.log(search);
         </div>
       </form>
     </div>
+   
   );
 };
 
