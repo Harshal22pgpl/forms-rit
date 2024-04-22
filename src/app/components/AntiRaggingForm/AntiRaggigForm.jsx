@@ -55,7 +55,7 @@ const AntiRaggingForm = () => {
       validationErrors.courseName = "Please enter enrolled course name.";
     }
     if (formData.parentPhone.trim() === "") {
-      validationErrors.parentPhone = "Please enter parent's phone number.";
+      validationErrors.parentPhone = "Please enter parent&apos;s phone number.";
     } else if (!phoneRegex.test(formData.parentPhone.trim())) {
       validationErrors.parentPhone = "Phone number must be 10 digits long.";
     }
@@ -162,7 +162,7 @@ const AntiRaggingForm = () => {
         </div>
         <div>
           <label htmlFor="parentName" className="block text-sm font-medium text-gray-700">
-            Parent's Name
+            Parent&apos;s Name
           </label>
           <input
             type="text"
@@ -178,7 +178,7 @@ const AntiRaggingForm = () => {
         </div>
         <div>
           <label htmlFor="parentEmail" className="block text-sm font-medium text-gray-700">
-            Parent's Email
+            Parent&apos;s Email
           </label>
           <input
             type="email"
@@ -195,7 +195,7 @@ const AntiRaggingForm = () => {
 
         <div>
           <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
-            Parent's Phone
+            Parent&apos;s Phone
           </label>
           <input
             type="text"
@@ -212,7 +212,7 @@ const AntiRaggingForm = () => {
 
         <div>
           <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
-            Parent's Phone
+            Parent&apos;s Phone
           </label>
           <input
             type="text"
