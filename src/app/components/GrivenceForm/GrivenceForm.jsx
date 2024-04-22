@@ -190,7 +190,7 @@ const GrievanceForm = () => {
             )}
           </div>
           {/* Type of GRIEVENCE */}
-          // Inside the Type of GRIEVENCE div
+         
 <div>
   <label className="block text-sm font-medium text-gray-700">
     Type of GRIEVENCE
