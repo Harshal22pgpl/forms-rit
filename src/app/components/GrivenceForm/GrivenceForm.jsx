@@ -10,7 +10,7 @@ const GrievanceForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -32,19 +32,19 @@ const GrievanceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
+
     const validationErrors = {};
-   
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
     const enrollmentUuidRegex = /^[a-zA-Z0-9]{12}$/;
-   
+
     if (formData.name.trim() === "") {
       validationErrors.name = "Please enter student name.";
     }
     if (formData.enrollmentUuid.trim() === "") {
-      validationErrors. enrollmentUuid = "Please enter student ID.";
-    }else if (!enrollmentUuidRegex.test(formData.enrollmentUuid.trim())) {
+      validationErrors.enrollmentUuid = "Please enter student ID.";
+    } else if (!enrollmentUuidRegex.test(formData.enrollmentUuid.trim())) {
       validationErrors.enrollmentUuid = "Student Enroll number must be 12 digits long.";
     }
     if (formData.semester.trim() === "") {
@@ -64,20 +64,20 @@ const GrievanceForm = () => {
     if (formData.description.trim() === "") {
       validationErrors.description = "Please elaborate your GRIEVENCE.";
     }
-    
-  
+
+
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       try {
-       
-        const res = await postGrievence(formData);
-        console.log(res); 
 
-       
-        setFormData(GRIEVENCE); 
+        const res = await postGrievence(formData);
+        console.log(res);
+
+
+        setFormData(GRIEVENCE);
       } catch (error) {
         console.error("Error posting faculty feedback:", error);
-    
+
       }
     }
   };
@@ -190,91 +190,91 @@ const GrievanceForm = () => {
             )}
           </div>
           {/* Type of GRIEVENCE */}
-         
-<div>
-  <label className="block text-sm font-medium text-gray-700">
-    Type of GRIEVENCE
-  </label>
-  <div className="mt-2 space-y-2 gap-3 grid grid-cols-2">
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Admission Related"
-        checked={formData.typeOfGrievence.includes(
-          "Admission Related"
-        )}
-        onChange={handleCheckboxChange} 
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">Admission Related</span>
-    </label>
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Anti-ragging/Posh"
-        checked={formData.typeOfGrievence.includes(
-          "Anti-ragging/Posh"
-        )}
-        onChange={handleCheckboxChange} 
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">
-        Anti-ragging/Posh
-      </span>
-    </label>
-    {/* Add more checkboxes for other GRIEVENCE types */}
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Course Related"
-        checked={formData.typeOfGrievence.includes("Course Related")}
-        onChange={handleCheckboxChange}
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">Course Related</span>
-    </label>
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Document Related"
-        checked={formData.typeOfGrievence.includes("Document Related")}
-        onChange={handleCheckboxChange}
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">Document Related</span>
-    </label>
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Examination Related"
-        checked={formData.typeOfGrievence.includes("Examination Related")}
-        onChange={handleCheckboxChange}
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">Examination Related</span>
-    </label>
-    <label className="inline-flex items-center">
-      <input
-        type="checkbox"
-        name="typeOfGrievence"
-        value="Evaluation Related"
-        checked={formData.typeOfGrievence.includes("Evaluation Related")}
-        onChange={handleCheckboxChange}
-        className="form-checkbox h-5 w-5 text-yellow-600"
-      />
-      <span className="ml-2 text-gray-700">Evaluation Related</span>
-    </label>
-    {/* Add more checkboxes for other GRIEVENCE types */}
-  </div>
-  {errors.typeOfGrievence && (
-    <p className="text-red-500">{errors.typeOfGrievence}</p>
-  )}
-</div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Type of GRIEVENCE
+            </label>
+            <div className="mt-2 space-y-2 gap-3 grid grid-cols-2">
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Admission Related"
+                  checked={formData.typeOfGrievence.includes(
+                    "Admission Related"
+                  )}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">Admission Related</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Anti-ragging/Posh"
+                  checked={formData.typeOfGrievence.includes(
+                    "Anti-ragging/Posh"
+                  )}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">
+                  Anti-ragging/Posh
+                </span>
+              </label>
+              {/* Add more checkboxes for other GRIEVENCE types */}
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Course Related"
+                  checked={formData.typeOfGrievence.includes("Course Related")}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">Course Related</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Document Related"
+                  checked={formData.typeOfGrievence.includes("Document Related")}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">Document Related</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Examination Related"
+                  checked={formData.typeOfGrievence.includes("Examination Related")}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">Examination Related</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="typeOfGrievence"
+                  value="Evaluation Related"
+                  checked={formData.typeOfGrievence.includes("Evaluation Related")}
+                  onChange={handleCheckboxChange}
+                  className="form-checkbox h-5 w-5 text-yellow-600"
+                />
+                <span className="ml-2 text-gray-700">Evaluation Related</span>
+              </label>
+              {/* Add more checkboxes for other GRIEVENCE types */}
+            </div>
+            {errors.typeOfGrievence && (
+              <p className="text-red-500">{errors.typeOfGrievence}</p>
+            )}
+          </div>
 
           {/* Elaborate your GRIEVENCE */}
           <div>
