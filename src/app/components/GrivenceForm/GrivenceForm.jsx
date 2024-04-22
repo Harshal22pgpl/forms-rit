@@ -10,31 +10,21 @@ const GrievanceForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
     setErrors({ ...errors, [name]: "" });
   };
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    let updatedtypeOfGrievence = [...formData.typeOfGrievence];
-
-    if (checked) {
-      updatedtypeOfGrievence.push(value);
-    } else {
-      updatedtypeOfGrievence = updatedtypeOfGrievence.filter(
-        (type) => type !== value
-      );
-    }
-
-    setFormData({ ...formData, typeOfGrievence: updatedtypeOfGrievence });
+    const updatedTypeOfGrievance = checked ? value : "";
+    setFormData({ ...formData, typeOfGrievence: updatedTypeOfGrievance });
     setErrors({ ...errors, typeOfGrievence: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = {};
 
+    const validationErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
     const enrollmentUuidRegex = /^[a-zA-Z0-9]{12}$/;
@@ -58,28 +48,28 @@ const GrievanceForm = () => {
     if (!emailRegex.test(formData.email.trim())) {
       validationErrors.email = "Please enter a valid email address.";
     }
+
     if (formData.typeOfGrievence.length === 0) {
-      validationErrors.typeOfGrievence = "Please select at least one GRIEVENCE type.";
-    }
-    if (formData.description.trim() === "") {
-      validationErrors.description = "Please elaborate your GRIEVENCE.";
+      validationErrors.typeOfGrievence = "Please select at least one GRIEVANCE type.";
     }
 
+    if (formData.description.trim() === "") {
+      validationErrors.description = "Please elaborate your grievance.";
+    }
+    if (formData.collegeName.trim() === "") {
+      validationErrors.collegeName = "Please enter college name.";
+    }
 
     setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      try {
 
-        const res = await postGrievence(formData);
-        console.log(res);
-
-
-        setFormData(GRIEVENCE);
-      } catch (error) {
-        console.error("Error posting faculty feedback:", error);
-
-      }
+    try {
+      const res = await postGrievence(formData);
+      console.log(res, "resssssss");
+      setFormData(GRIEVENCE);
+    } catch (error) {
+      console.error("Error posting grievance:", error);
     }
+
   };
 
   return (
@@ -294,6 +284,25 @@ const GrievanceForm = () => {
             ></textarea>
             {errors.description && (
               <p className="text-red-500">{errors.description}</p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="feedback"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Feedback
+            </label>
+            <textarea
+              name="feedback"
+              id="feedback"
+              value={formData.feedback}
+              onChange={handleChange}
+              rows="4"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
+            ></textarea>
+            {errors.description && (
+              <p className="text-red-500">{errors.feedback}</p>
             )}
           </div>
           {/* College Name */}

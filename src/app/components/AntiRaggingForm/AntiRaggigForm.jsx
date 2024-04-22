@@ -1,28 +1,11 @@
 "use client";
+import { ANTIRAGGING } from "@/lib/constants";
+import { postAntiRagging } from "@/lib/services/Anti-Ragging/Anti-Ragging";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 const AntiRaggingForm = () => {
-  const [formData, setFormData] = useState({
-    studentName: "",
-    studentId: "",
-    enrolledCourse: "",
-    phoneNo: "",
-    emailAddress: "",
-    incidentDetails: "",
-    witnesses: [],
-   
-    
-   
-    parentName: "",
-   
-    parentPhone: "",
-   
-    parentEmail: "",
-  
-   
-  });
- 
+  const [formData, setFormData] = useState(ANTIRAGGING);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -36,8 +19,8 @@ const AntiRaggingForm = () => {
 
   const handleWitnessChange = (e) => {
     const { value, checked } = e.target;
-    let updatedWitnesses = [...formData.witnesses];
-
+    let updatedWitnesses = [...formData.witnesses]; // Corrected from formData.witness
+  
     if (checked) {
       updatedWitnesses.push(value);
     } else {
@@ -45,11 +28,12 @@ const AntiRaggingForm = () => {
         (witness) => witness !== value
       );
     }
-
-    setFormData({ ...formData, witnesses: updatedWitnesses });
+  
+    setFormData({ ...formData, witnesses: updatedWitnesses }); // Corrected from formData.witness
   };
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate form fields before submission
     const validationErrors = {};
@@ -58,256 +42,189 @@ const AntiRaggingForm = () => {
     const phoneRegex = /^\d{10}$/;
     const studentIdRegex = /^[a-zA-Z0-9]{12}$/;
 
-  
     // Validate each field
-    if (formData.studentName.trim() === "") {
-      validationErrors.studentName = "Please enter student name.";
+    if (formData.name.trim() === "") {
+      validationErrors.name = "Please enter student name.";
     }
-    if (formData.studentId.trim() === "") {
-      validationErrors.studentId = "Please enter student ID.";
-    }else if (!studentIdRegex.test(formData.studentId.trim())) {
-      validationErrors.studentId = "Student Enroll number must be 12 digits long.";
+    if (formData.enrollmentUuid.trim() === "") {
+      validationErrors.enrollmentUuid = "Please enter student ID.";
+    } else if (!studentIdRegex.test(formData.enrollmentUuid.trim())) {
+      validationErrors.enrollmentUuid = "Student Enroll number must be 12 digits long.";
     }
-    if (formData.enrolledCourse.trim() === "") {
-      validationErrors.enrolledCourse = "Please enter enrolled course name.";
+    if (formData.courseName.trim() === "") {
+      validationErrors.courseName = "Please enter enrolled course name.";
     }
-    if (formData.phoneNo.trim() === "") {
-      validationErrors.phoneNo = "Please enter phone number.";
-    } else if (!phoneRegex.test(formData.phoneNo.trim())) {
-      validationErrors.phoneNo = "Phone number must be 10 digits long.";
+    if (formData.parentPhone.trim() === "") {
+      validationErrors.parentPhone = "Please enter parent&apos;s phone number.";
+    } else if (!phoneRegex.test(formData.parentPhone.trim())) {
+      validationErrors.parentPhone = "Phone number must be 10 digits long.";
     }
-    if (!emailRegex.test(formData.emailAddress.trim())) {
-      validationErrors.emailAddress = "Please enter a valid email address.";
-    }
-    if (formData.motherName.trim() === "") {
-      validationErrors.motherName = "Please enter mother's name.";
-    }
-    if (formData.fatherName.trim() === "") {
-      validationErrors.fatherName = "Please enter father's name.";
-    }
-    if (formData.motherPhone.trim() === "") {
-      validationErrors.motherPhone = "Please enter mother's phone number.";
-    } else if (!phoneRegex.test(formData.motherPhone.trim())) {
-      validationErrors.motherPhone = "Phone number must be 10 digits long.";
-    }
-    if (formData.fatherPhone.trim() === "") {
-      validationErrors.fatherPhone = "Please enter father's phone number.";
-    } else if (!phoneRegex.test(formData.fatherPhone.trim())) {
-      validationErrors.fatherPhone = "Phone number must be 10 digits long.";
-    }
-    if (!emailRegex.test(formData.motherEmail.trim())) {
-      validationErrors.motherEmail = "Please enter a valid email address for mother.";
-    }
-    if (!emailRegex.test(formData.fatherEmail.trim())) {
-      validationErrors.fatherEmail = "Please enter a valid email address for father.";
-    }
-    if (formData.collegeName.trim() === "") {
-      validationErrors.collegeName = "Please enter college name.";
-    }
-    if (formData.collegeAddress.trim() === "") {
-      validationErrors.collegeAddress = "Please enter college address.";
+    if (!emailRegex.test(formData.email.trim())) {
+      validationErrors.email = "Please enter a valid email address.";
     }
     if (formData.incidentDetails.trim() === "") {
       validationErrors.incidentDetails = "Please provide incident details.";
     }
+    if (formData.collegeName.trim() === "") {
+      validationErrors.collegeName = "Please enter college name.";
+    }
     // Add validation for other fields
-  
+
     // Update errors state with validation results
     setErrors(validationErrors);
-  
+
     // If there are no validation errors, submit the form
     if (Object.keys(validationErrors).length === 0) {
-      console.log(formData);
-      // Reset the form after submission
-      setFormData({ ...initialFormData });
+      try {
+        // Make API call using the client hook
+        const res = await postAntiRagging(formData);
+        console.log(res);
+        // Reset the form after successful submission
+        setFormData(initialFormData);
+      } catch (error) {
+        console.error("Error submitting anti-ragging form:", error);
+      }
     }
   };
+
   
   return (
 
-    <div className=" w-10/12 mx-auto mt-10 p-8 my-10 bg-gray-100 rounded-lg shadow-lg">
-      <h1 className="my-4 text-3xl font-bold text-center text-red-700">
-        Anti-Ragging Form
-      </h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="studentName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Student Name
-            </label>
-            <input
-              type="text"
-              name="studentName"
-              id="studentName"
-              value={formData.studentName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-              {errors.studentName && (
-              <p className="text-red-500">{errors.studentName}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="studentId"
-              className="block text-sm font-medium text-gray-700"
-            >
-             Erollment No
-            </label>
-            <input
-              type="text"
-              name="studentId"
-              id="studentId"
-              value={formData.studentId}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.studentId && (
-              <p className="text-red-500">{errors.studentId}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="enrolledCourse"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Enrolled Course Name
-            </label>
-            <input
-              type="text"
-              name="enrolledCourse"
-              id="enrolledCourse"
-              value={formData.enrolledCourse}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.enrolledCourse && (
-              <p className="text-red-500">{errors.enrolledCourse}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="phoneNo"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Phone No
-            </label>
-            <input
-              type="text"
-              name="phoneNo"
-              id="phoneNo"
-              value={formData.phoneNo}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.phoneNo && (
-              <p className="text-red-500">{errors.phoneNo}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="emailAddress"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="emailAddress"
-              id="emailAddress"
-              value={formData.emailAddress}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.emailAddress && (
-              <p className="text-red-500">{errors.emailAddress}</p>
-            )}
-          </div>
+    <div className="w-10/12 mx-auto mt-10 p-8 my-10 bg-gray-100 rounded-lg shadow-lg">
+    <h1 className="my-4 text-3xl font-bold text-center text-red-700">
+      Anti-Ragging Form
+    </h1>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            Student Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.name && (
+            <p className="text-red-500">{errors.name}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="enrollmentUuid" className="block text-sm font-medium text-gray-700">
+            Enrollment Number
+          </label>
+          <input
+            type="text"
+            name="enrollmentUuid"
+            id="enrollmentUuid"
+            value={formData.enrollmentUuid}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.enrollmentUuid && (
+            <p className="text-red-500">{errors.enrollmentUuid}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="courseName" className="block text-sm font-medium text-gray-700">
+            Course Name
+          </label>
+          <input
+            type="text"
+            name="courseName"
+            id="courseName"
+            value={formData.courseName}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.courseName && (
+            <p className="text-red-500">{errors.courseName}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="parentName" className="block text-sm font-medium text-gray-700">
+            Parent&apos;s Name
+          </label>
+          <input
+            type="text"
+            name="parentName"
+            id="parentName"
+            value={formData.parentName}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.parentName && (
+            <p className="text-red-500">{errors.parentName}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="parentEmail" className="block text-sm font-medium text-gray-700">
+            Parent&apos;s Email
+          </label>
+          <input
+            type="email"
+            name="parentEmail"
+            id="parentEmail"
+            value={formData.parentEmail}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.parentEmail && (
+            <p className="text-red-500">{errors.parentEmail}</p>
+          )}
+        </div>
 
-        
-          <div>
-            <label
-              htmlFor="fatherName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Parent&apos;s Name
-            </label>
-            <input
-              type="text"
-              name="fatherName"
-              id="fatherName"
-              value={formData.fatherName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.fatherName && (
-              <p className="text-red-500">{errors.fatherName}</p>
-            )}
-          </div>
-         
-          <div>
-            <label
-              htmlFor="fatherPhone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Parent&apos;s Phone
-            </label>
-            <input
-              type="text"
-              name="fatherPhone"
-              id="fatherPhone"
-              value={formData.fatherPhone}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.fatherPhone && (
-              <p className="text-red-500">{errors.fatherPhone}</p>
-            )}
-          </div>
-         
-          <div>
-            <label
-              htmlFor="fatherEmail"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Parent&apos;s Email
-            </label>
-            <input
-              type="email"
-              name="fatherEmail"
-              id="fatherEmail"
-              value={formData.fatherEmail}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            />
-               {errors.fatherEmail && (
-              <p className="text-red-500">{errors.fatherEmail}</p>
-            )}
-          </div>
-        
-         
-          <div>
-            <label
-              htmlFor="incidentDetails"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Incident Details
-            </label>
-            <textarea
-              name="incidentDetails"
-              id="incidentDetails"
-              value={formData.incidentDetails}
-              onChange={handleChange}
-              rows="4"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
-            ></textarea>
-               {errors.incidentDetails && (
-              <p className="text-red-500">{errors.incidentDetails}</p>
-            )}
-          </div>
+        <div>
+          <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
+            Parent&apos;s Phone
+          </label>
+          <input
+            type="text"
+            name="phone"
+            id="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.phone && (
+            <p className="text-red-500">{errors.phone}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
+            Parent&apos;s Phone
+          </label>
+          <input
+            type="text"
+            name="parentPhone"
+            id="parentPhone"
+            value={formData.parentPhone}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.parentPhone && (
+            <p className="text-red-500">{errors.parentPhone}</p>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -385,15 +302,48 @@ const AntiRaggingForm = () => {
           </div>
         </div>
         <div>
-          <button
-            type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
-          >
-            Submit
-          </button>
+          <label htmlFor="incidentDetails" className="block text-sm font-medium text-gray-700">
+            Incident Details
+          </label>
+          <textarea
+            name="incidentDetails"
+            id="incidentDetails"
+            value={formData.incidentDetails}
+            onChange={handleChange}
+            rows="4"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          ></textarea>
+          {errors.incidentDetails && (
+            <p className="text-red-500">{errors.incidentDetails}</p>
+          )}
         </div>
-      </form>
-    </div>
+        <div>
+          <label htmlFor="collegeName" className="block text-sm font-medium text-gray-700">
+            College Name
+          </label>
+          <input
+            type="text"
+            name="collegeName"
+            id="collegeName"
+            value={formData.collegeName}
+            onChange={handleChange}
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+          />
+          {errors.collegeName && (
+            <p className="text-red-500">{errors.collegeName}</p>
+          )}
+        </div>
+      </div>
+      <div>
+        <button
+          type="submit"
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
    
   );
 };
