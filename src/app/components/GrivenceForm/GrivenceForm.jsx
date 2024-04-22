@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import { GRIEVANCE } from "@/lib/constants";
 import { postGrievence } from "@/lib/services/grievence/grievence";
