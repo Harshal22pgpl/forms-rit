@@ -5,9 +5,6 @@ import { FACULTY } from "@/lib/constants/index";
 const FacultyFeedbackForm = () => {
 
   const [formData, setFormData] = useState(FACULTY)
-   
-
-
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
