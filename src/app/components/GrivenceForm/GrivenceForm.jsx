@@ -204,7 +204,7 @@ const GrievanceForm = () => {
         checked={formData.typeOfGrievence.includes(
           "Admission Related"
         )}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange} 
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">Admission Related</span>
@@ -217,7 +217,7 @@ const GrievanceForm = () => {
         checked={formData.typeOfGrievence.includes(
           "Anti-ragging/Posh"
         )}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange} 
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">
@@ -231,7 +231,7 @@ const GrievanceForm = () => {
         name="typeOfGrievence"
         value="Course Related"
         checked={formData.typeOfGrievence.includes("Course Related")}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange}
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">Course Related</span>
@@ -242,7 +242,7 @@ const GrievanceForm = () => {
         name="typeOfGrievence"
         value="Document Related"
         checked={formData.typeOfGrievence.includes("Document Related")}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange}
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">Document Related</span>
@@ -253,7 +253,7 @@ const GrievanceForm = () => {
         name="typeOfGrievence"
         value="Examination Related"
         checked={formData.typeOfGrievence.includes("Examination Related")}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange}
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">Examination Related</span>
@@ -264,7 +264,7 @@ const GrievanceForm = () => {
         name="typeOfGrievence"
         value="Evaluation Related"
         checked={formData.typeOfGrievence.includes("Evaluation Related")}
-        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        onChange={handleCheckboxChange}
         className="form-checkbox h-5 w-5 text-yellow-600"
       />
       <span className="ml-2 text-gray-700">Evaluation Related</span>
