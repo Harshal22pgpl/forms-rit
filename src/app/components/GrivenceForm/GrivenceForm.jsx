@@ -1,17 +1,16 @@
 'use client'
 import React, { useState } from "react";
-import { GRIEVANCE } from "@/lib/constants";
+import { GRIEVENCE } from "@/lib/constants";
 import { postGrievence } from "@/lib/services/grievence/grievence";
 
 const GrievanceForm = () => {
-  const [formData, setFormData] = useState(GRIEVANCE);
+  const [formData, setFormData] = useState(GRIEVENCE);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    // Clear the corresponding error message when the user inputs something in a field
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -28,19 +27,18 @@ const GrievanceForm = () => {
     }
 
     setFormData({ ...formData, typeOfGrievence: updatedtypeOfGrievence });
-    // Clear the corresponding error message when the user checks or unchecks a checkbox
     setErrors({ ...errors, typeOfGrievence: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate form fields before submission
+   
     const validationErrors = {};
-    // Define regex patterns for validation
+   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{10}$/; // Regex for 10-digit phone number
+    const phoneRegex = /^\d{10}$/;
     const enrollmentUuidRegex = /^[a-zA-Z0-9]{12}$/;
-    // Validate each field
+   
     if (formData.name.trim() === "") {
       validationErrors.name = "Please enter student name.";
     }
@@ -61,25 +59,25 @@ const GrievanceForm = () => {
       validationErrors.email = "Please enter a valid email address.";
     }
     if (formData.typeOfGrievence.length === 0) {
-      validationErrors.typeOfGrievence = "Please select at least one grievance type.";
+      validationErrors.typeOfGrievence = "Please select at least one GRIEVENCE type.";
     }
     if (formData.description.trim() === "") {
-      validationErrors.description = "Please elaborate your grievance.";
+      validationErrors.description = "Please elaborate your GRIEVENCE.";
     }
     
-    // Update errors state with validation results
+  
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       try {
-        // Call API to post faculty feedback
+       
         const res = await postGrievence(formData);
-        console.log(res); // Handle API response as needed
+        console.log(res); 
 
-        // Reset the form after submission
-        setFormData(GRIEVANCE); // Reset form data to initial state
+       
+        setFormData(GRIEVENCE); 
       } catch (error) {
         console.error("Error posting faculty feedback:", error);
-        // Handle error appropriately
+    
       }
     }
   };
@@ -87,7 +85,7 @@ const GrievanceForm = () => {
   return (
     <div className="w-full max-w-md mx-auto mt-10 p-4 my-10 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="my-4 text-3xl font-bold text-center text-yellow-700">
-        Grievance Form
+        GRIEVENCE Form
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-4">
@@ -191,11 +189,11 @@ const GrievanceForm = () => {
               <p className="text-red-500">{errors.email}</p>
             )}
           </div>
-          {/* Type of Grievance */}
-          // Inside the Type of Grievance div
+          {/* Type of GRIEVENCE */}
+          // Inside the Type of GRIEVENCE div
 <div>
   <label className="block text-sm font-medium text-gray-700">
-    Type of Grievance
+    Type of GRIEVENCE
   </label>
   <div className="mt-2 space-y-2 gap-3 grid grid-cols-2">
     <label className="inline-flex items-center">
@@ -226,7 +224,7 @@ const GrievanceForm = () => {
         Anti-ragging/Posh
       </span>
     </label>
-    {/* Add more checkboxes for other grievance types */}
+    {/* Add more checkboxes for other GRIEVENCE types */}
     <label className="inline-flex items-center">
       <input
         type="checkbox"
@@ -271,20 +269,20 @@ const GrievanceForm = () => {
       />
       <span className="ml-2 text-gray-700">Evaluation Related</span>
     </label>
-    {/* Add more checkboxes for other grievance types */}
+    {/* Add more checkboxes for other GRIEVENCE types */}
   </div>
   {errors.typeOfGrievence && (
     <p className="text-red-500">{errors.typeOfGrievence}</p>
   )}
 </div>
 
-          {/* Elaborate your grievance */}
+          {/* Elaborate your GRIEVENCE */}
           <div>
             <label
               htmlFor="description"
               className="block text-sm font-medium text-gray-700"
             >
-              Elaborate your grievance
+              Elaborate your GRIEVENCE
             </label>
             <textarea
               name="description"
