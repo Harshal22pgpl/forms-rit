@@ -1,4 +1,4 @@
-import { api } from "@/lib/middleware/apiInceptor"
+import { api } from "@/lib/middleware/apiInceptors"
 import { GRIEVENCE_URL } from ".."
 
 export const postGrievence =async (payload) =>{
