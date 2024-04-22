@@ -43,6 +43,17 @@ export const GRIEVENCE = {
     description: "",
     collegeName: ""
 };
+export const ANTIRAGGING = {
+    name: "",
+    enrollmentUuid: "",
+    courseName: "",
+    parentName: "",
+    parentEmail: "",
+    parentPhone: "",
+    witness: ["", ""],
+    incidentDetails: "",
+    collegeName: ""
+}
 
 
 

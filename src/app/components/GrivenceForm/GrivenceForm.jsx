@@ -1,18 +1,9 @@
-"use client";
-// components/GrievanceForm.js
 import React, { useState } from "react";
+import { GRIEVANCE } from "@/lib/constants";
+import { postGrievence } from "@/lib/services/grievence/grievence";
 
 const GrievanceForm = () => {
-  const [formData, setFormData] = useState({
-    studentName: "",
-    studentId: "",
-    enrolledCourse: "",
-    phoneNo: "",
-    emailAddress: "",
-    grievanceType: [],
-    elaborateGrievance: "",
-  });
-
+  const [formData, setFormData] = useState(GRIEVANCE);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -25,70 +16,70 @@ const GrievanceForm = () => {
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    let updatedGrievanceType = [...formData.grievanceType];
+    let updatedtypeOfGrievence = [...formData.typeOfGrievence];
 
     if (checked) {
-      updatedGrievanceType.push(value);
+      updatedtypeOfGrievence.push(value);
     } else {
-      updatedGrievanceType = updatedGrievanceType.filter(
+      updatedtypeOfGrievence = updatedtypeOfGrievence.filter(
         (type) => type !== value
       );
     }
 
-    setFormData({ ...formData, grievanceType: updatedGrievanceType });
+    setFormData({ ...formData, typeOfGrievence: updatedtypeOfGrievence });
+    // Clear the corresponding error message when the user checks or unchecks a checkbox
+    setErrors({ ...errors, typeOfGrievence: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate form fields before submission
     const validationErrors = {};
     // Define regex patterns for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/; // Regex for 10-digit phone number
-    const studentIdRegex = /^[a-zA-Z0-9]{12}$/;
+    const enrollmentUuidRegex = /^[a-zA-Z0-9]{12}$/;
     // Validate each field
-    if (formData.studentName.trim() === "") {
-      validationErrors.studentName = "Please enter student name.";
+    if (formData.name.trim() === "") {
+      validationErrors.name = "Please enter student name.";
     }
-    if (formData.studentId.trim() === "") {
-      validationErrors.studentId = "Please enter student ID.";
-    }else if (!studentIdRegex.test(formData.studentId.trim())) {
-      validationErrors.studentId = "Student Enroll number must be 12 digits long.";
+    if (formData.enrollmentUuid.trim() === "") {
+      validationErrors. enrollmentUuid = "Please enter student ID.";
+    }else if (!enrollmentUuidRegex.test(formData.enrollmentUuid.trim())) {
+      validationErrors.enrollmentUuid = "Student Enroll number must be 12 digits long.";
     }
-    if (formData.enrolledCourse.trim() === "") {
-      validationErrors.enrolledCourse = "Please enter enrolled course name.";
+    if (formData.semester.trim() === "") {
+      validationErrors.semester = "Please enter semester.";
     }
-    if (formData.phoneNo.trim() === "") {
-      validationErrors.phoneNo = "Please enter phone number.";
-    } else if (!phoneRegex.test(formData.phoneNo.trim())) {
-      validationErrors.phoneNo = "Phone number must be 10 digits long.";
+    if (formData.phone.trim() === "") {
+      validationErrors.phone = "Please enter phone number.";
+    } else if (!phoneRegex.test(formData.phone.trim())) {
+      validationErrors.phone = "Phone number must be 10 digits long.";
     }
-    if (!emailRegex.test(formData.emailAddress.trim())) {
-      validationErrors.emailAddress = "Please enter a valid email address.";
+    if (!emailRegex.test(formData.email.trim())) {
+      validationErrors.email = "Please enter a valid email address.";
     }
-    if (formData.grievanceType.length === 0) {
-      validationErrors.grievanceType = "Please select at least one grievance type.";
+    if (formData.typeOfGrievence.length === 0) {
+      validationErrors.typeOfGrievence = "Please select at least one grievance type.";
     }
-    if (formData.elaborateGrievance.trim() === "") {
-      validationErrors.elaborateGrievance = "Please elaborate your grievance.";
+    if (formData.description.trim() === "") {
+      validationErrors.description = "Please elaborate your grievance.";
     }
     
     // Update errors state with validation results
     setErrors(validationErrors);
-    
-    // If there are no validation errors, submit the form
     if (Object.keys(validationErrors).length === 0) {
-      console.log(formData);
-      // Reset the form after submission
-      setFormData({
-        studentName: "",
-        studentId: "",
-        enrolledCourse: "",
-        phoneNo: "",
-        emailAddress: "",
-        grievanceType: [],
-        elaborateGrievance: "",
-      });
+      try {
+        // Call API to post faculty feedback
+        const res = await postGrievence(formData);
+        console.log(res); // Handle API response as needed
+
+        // Reset the form after submission
+        setFormData(GRIEVANCE); // Reset form data to initial state
+      } catch (error) {
+        console.error("Error posting faculty feedback:", error);
+        // Handle error appropriately
+      }
     }
   };
 
@@ -122,192 +113,208 @@ const GrievanceForm = () => {
           {/* Student ID No */}
           <div>
             <label
-              htmlFor="studentId"
+              htmlFor="enrollmentUuid"
               className="block text-sm font-medium text-gray-700"
             >
               Enrollment Number
             </label>
             <input
               type="text"
-              name="studentId"
-              id="studentId"
-              value={formData.studentId}
+              name="enrollmentUuid"
+              id="enrollmentUuid"
+              value={formData.enrollmentUuid}
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.studentId && (
-              <p className="text-red-500">{errors.studentId}</p>
+            {errors.enrollmentUuid && (
+              <p className="text-red-500">{errors.enrollmentUuid}</p>
             )}
           </div>
           {/* Enrolled Course Name */}
           <div>
             <label
-              htmlFor="enrolledCourse"
+              htmlFor="semester"
               className="block text-sm font-medium text-gray-700"
             >
-              Enrolled Course Name
+              Semester
             </label>
             <input
               type="text"
-              name="enrolledCourse"
-              id="enrolledCourse"
-              value={formData.enrolledCourse}
+              name="semester"
+              id="semester"
+              value={formData.semester}
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.enrolledCourse && (
-              <p className="text-red-500">{errors.enrolledCourse}</p>
+            {errors.semester && (
+              <p className="text-red-500">{errors.semester}</p>
             )}
           </div>
           {/* Phone No */}
           <div>
             <label
-              htmlFor="phoneNo"
+              htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
               Phone No
             </label>
             <input
               type="text"
-              name="phoneNo"
-              id="phoneNo"
-              value={formData.phoneNo}
+              name="phone"
+              id="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.phoneNo && (
-              <p className="text-red-500">{errors.phoneNo}</p>
+            {errors.phone && (
+              <p className="text-red-500">{errors.phone}</p>
             )}
           </div>
           {/* Email Address */}
           <div>
             <label
-              htmlFor="emailAddress"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
               Email Address
             </label>
             <input
               type="email"
-              name="emailAddress"
-              id="emailAddress"
-              value={formData.emailAddress}
+              name="email"
+              id="email"
+              value={formData.email}
               onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             />
-            {errors.emailAddress && (
-              <p className="text-red-500">{errors.emailAddress}</p>
+            {errors.email && (
+              <p className="text-red-500">{errors.email}</p>
             )}
           </div>
           {/* Type of Grievance */}
-          <div>
-          <label className="block text-sm font-medium text-gray-700">
-              Type of Grievance
-            </label>
-            
-             <div className="mt-2 space-y-2 gap-3 grid grid-cols-2">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Admission Related"
-                  checked={formData.grievanceType.includes(
-                    "Admission Related"
-                  )}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">Admission Related</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Anti-ragging/Posh"
-                  checked={formData.grievanceType.includes(
-                    "Anti-ragging/Posh"
-                  )}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">
-                  Anti-ragging/Posh
-                </span>
-              </label>
-              {/* Add more checkboxes for other grievance types */}
-              {/* Course Related */}
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Course Related"
-                  checked={formData.grievanceType.includes("Course Related")}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">Course Related</span>
-              </label>
-              {/* Document Related */}
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Document Related"
-                  checked={formData.grievanceType.includes("Document Related")}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">Document Related</span>
-              </label>
-              {/* Examination Related */}
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Examination Related"
-                  checked={formData.grievanceType.includes("Examination Related")}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">Examination Related</span>
-              </label>
-              {/* Evaluation Related */}
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="grievanceType"
-                  value="Evaluation Related"
-                  checked={formData.grievanceType.includes("Evaluation Related")}
-                  onChange={handleCheckboxChange}
-                  className="form-checkbox h-5 w-5 text-yellow-600"
-                />
-                <span className="ml-2 text-gray-700">Evaluation Related</span>
-              </label>
-              {/* Add more checkboxes for other grievance types */}
-            </div>
-          
-            {errors.grievanceType && (
-              <p className="text-red-500">{errors.grievanceType}</p>
-            )}
-          </div>
+          // Inside the Type of Grievance div
+<div>
+  <label className="block text-sm font-medium text-gray-700">
+    Type of Grievance
+  </label>
+  <div className="mt-2 space-y-2 gap-3 grid grid-cols-2">
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Admission Related"
+        checked={formData.typeOfGrievence.includes(
+          "Admission Related"
+        )}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">Admission Related</span>
+    </label>
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Anti-ragging/Posh"
+        checked={formData.typeOfGrievence.includes(
+          "Anti-ragging/Posh"
+        )}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">
+        Anti-ragging/Posh
+      </span>
+    </label>
+    {/* Add more checkboxes for other grievance types */}
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Course Related"
+        checked={formData.typeOfGrievence.includes("Course Related")}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">Course Related</span>
+    </label>
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Document Related"
+        checked={formData.typeOfGrievence.includes("Document Related")}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">Document Related</span>
+    </label>
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Examination Related"
+        checked={formData.typeOfGrievence.includes("Examination Related")}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">Examination Related</span>
+    </label>
+    <label className="inline-flex items-center">
+      <input
+        type="checkbox"
+        name="typeOfGrievence"
+        value="Evaluation Related"
+        checked={formData.typeOfGrievence.includes("Evaluation Related")}
+        onChange={handleCheckboxChange} // Here's where handleCheckboxChange is used
+        className="form-checkbox h-5 w-5 text-yellow-600"
+      />
+      <span className="ml-2 text-gray-700">Evaluation Related</span>
+    </label>
+    {/* Add more checkboxes for other grievance types */}
+  </div>
+  {errors.typeOfGrievence && (
+    <p className="text-red-500">{errors.typeOfGrievence}</p>
+  )}
+</div>
+
           {/* Elaborate your grievance */}
           <div>
             <label
-              htmlFor="elaborateGrievance"
+              htmlFor="description"
               className="block text-sm font-medium text-gray-700"
             >
               Elaborate your grievance
             </label>
             <textarea
-              name="elaborateGrievance"
-              id="elaborateGrievance"
-              value={formData.elaborateGrievance}
+              name="description"
+              id="description"
+              value={formData.description}
               onChange={handleChange}
               rows="4"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
             ></textarea>
-            {errors.elaborateGrievance && (
-              <p className="text-red-500">{errors.elaborateGrievance}</p>
+            {errors.description && (
+              <p className="text-red-500">{errors.description}</p>
+            )}
+          </div>
+          {/* College Name */}
+          <div>
+            <label
+              htmlFor="collegeName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              College Name
+            </label>
+            <input
+              type="text"
+              name="collegeName"
+              id="collegeName"
+              value={formData.collegeName}
+              onChange={handleChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
             )}
           </div>
         </div>
