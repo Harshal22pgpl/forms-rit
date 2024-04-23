@@ -19,17 +19,17 @@ const AntiRaggingForm = () => {
 
   const handleWitnessChange = (e) => {
     const { value, checked } = e.target;
-    let updatedWitnesses = [...formData.witnesses]; // Corrected from formData.witness
+    let updatedWitness = [...formData.witness]; // Corrected from formData.witness
   
     if (checked) {
-      updatedWitnesses.push(value);
+      updatedWitness.push(value);
     } else {
-      updatedWitnesses = updatedWitnesses.filter(
+      updatedWitness = updatedWitness.filter(
         (witness) => witness !== value
       );
     }
   
-    setFormData({ ...formData, witnesses: updatedWitnesses }); // Corrected from formData.witness
+    setFormData({ ...formData, witness: updatedWitness }); // Corrected from formData.witness
   };
   
 
@@ -228,15 +228,15 @@ const AntiRaggingForm = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Witnesses
+            Witness
           </label>
           <div className="mt-2 space-y-2 grid grid-cols-2">
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Classmate"
-                checked={formData.witnesses.includes("Classmate")}
+                checked={formData.witness.includes("Classmate")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
@@ -245,9 +245,9 @@ const AntiRaggingForm = () => {
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Teacher"
-                checked={formData.witnesses.includes("Teacher")}
+                checked={formData.witness.includes("Teacher")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
@@ -257,9 +257,9 @@ const AntiRaggingForm = () => {
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Security Guard"
-                checked={formData.witnesses.includes("Security Guard")}
+                checked={formData.witness.includes("Security Guard")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
@@ -268,9 +268,9 @@ const AntiRaggingForm = () => {
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Staff Member"
-                checked={formData.witnesses.includes("Staff Member")}
+                checked={formData.witness.includes("Staff Member")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
@@ -279,9 +279,9 @@ const AntiRaggingForm = () => {
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Roommate"
-                checked={formData.witnesses.includes("Roommate")}
+                checked={formData.witness.includes("Roommate")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
@@ -290,9 +290,9 @@ const AntiRaggingForm = () => {
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                name="witnesses"
+                name="witness"
                 value="Senior Student"
-                checked={formData.witnesses.includes("Senior Student")}
+                checked={formData.witness.includes("Senior Student")}
                 onChange={handleWitnessChange}
                 className="form-checkbox h-5 w-5 text-red-600"
               />
