@@ -53,7 +53,7 @@ export const ANTIRAGGING = {
     parentName: "",
     parentEmail: "",
     parentPhone: "",
-    witnesses: [],
+    witness: [],
     incidentDetails: "",
     collegeName: ""
 }
