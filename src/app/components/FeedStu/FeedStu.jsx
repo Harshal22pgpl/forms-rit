@@ -17,14 +17,10 @@ const FeedStu = () => {
   };
 
   const [studentData, setStudentData] = useState(STUDENT);
-  const searchParams = useSearchParams();
-  const collegeNameFromQuery = searchParams.get("college") || ""; // Extract college name from query parameters
-
-
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  
+
   useEffect(() => {
     // Parse the URL query parameters to get the college name
     const params = new URLSearchParams(window.location.search);
