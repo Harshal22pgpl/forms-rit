@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { scrollToTop } from "@/lib/helpers/scrollToTop";
 import { postStudent } from "@/lib/services/studentFeedback/studentFeedback";
+import { useSearchParams } from "next/navigation";
 
 const FeedStu = () => {
   const STUDENT = {
@@ -17,6 +18,16 @@ const FeedStu = () => {
   };
 
   const [studentData, setStudentData] = useState(STUDENT);
+  const searchParams = useSearchParams();
+  const collegeNameFromQuery = searchParams.get("college") || ""; // Extract college name from query parameters
+
+  useEffect(() => {
+    // Update studentData when collegeNameFromQuery changes
+    setStudentData((prevStudentData) => ({
+      ...prevStudentData,
+      collegeName: collegeNameFromQuery
+    }));
+  }, [collegeNameFromQuery]);
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});

@@ -27,7 +27,7 @@ export const FACULTY = {
     qualification: "",
     typeOfEmployment: "",
     collegeName: "",
-    feedback:"test"
+    feedback:""
   // OrganizationUuid: ""
 };
 
