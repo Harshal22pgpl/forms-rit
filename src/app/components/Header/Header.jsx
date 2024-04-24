@@ -7,7 +7,7 @@ import React from "react";
 export default function Header() {
   const router = useRouter(); // Use useRouter hook to access router object
   const { college } = router.query || {}; // Destructure college query parameter or provide an empty object as default
-
+console.log(college)
   return (
     <div className="px-20 py-2 flex gap-10 items-center">
       <div className="w-[370px] h-[120px] relative">
