@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { scrollToTop } from "@/lib/helpers/scrollToTop";
 import { postStudent } from "@/lib/services/studentFeedback/studentFeedback";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 const FeedStu = () => {
   const STUDENT = {
@@ -115,7 +113,6 @@ const FeedStu = () => {
   };
 
   return (
-    <Suspense>
     <div className="w-9/12 mx-auto mt-10 p-4 my-10">
       <h1 className="my-4 text-3xl font-bold">Student Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -320,7 +317,6 @@ const FeedStu = () => {
         </div>
       </form>
     </div>
-    </Suspense>
   );
 };
 
