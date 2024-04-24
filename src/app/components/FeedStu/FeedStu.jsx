@@ -24,7 +24,7 @@ const FeedStu = () => {
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-
+  
   useEffect(() => {
     // Parse the URL query parameters to get the college name
     const params = new URLSearchParams(window.location.search);
@@ -36,7 +36,6 @@ const FeedStu = () => {
     // Set loading to false once college name is retrieved
     setIsLoading(false);
   }, []);
-
 
   const handleChange = (e) => {
     setError({ msg: "", type: "" });
