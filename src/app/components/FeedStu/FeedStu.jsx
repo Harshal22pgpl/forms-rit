@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { scrollToTop } from "@/lib/helpers/scrollToTop";
 import { postStudent } from "@/lib/services/studentFeedback/studentFeedback";
