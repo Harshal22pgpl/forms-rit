@@ -21,16 +21,23 @@ const FeedStu = () => {
   const searchParams = useSearchParams();
   const collegeNameFromQuery = searchParams.get("college") || ""; // Extract college name from query parameters
 
-  useEffect(() => {
-    // Update studentData when collegeNameFromQuery changes
-    setStudentData((prevStudentData) => ({
-      ...prevStudentData,
-      collegeName: collegeNameFromQuery
-    }));
-  }, [collegeNameFromQuery]);
+
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    // Parse the URL query parameters to get the college name
+    const params = new URLSearchParams(window.location.search);
+    const collegeName = params.get("college");
+
+    // Set the college name in the studentData state
+    setStudentData({ ...STUDENT, collegeName });
+
+    // Set loading to false once college name is retrieved
+    setIsLoading(false);
+  }, []);
+
 
   const handleChange = (e) => {
     setError({ msg: "", type: "" });
