@@ -2,24 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { scrollToTop } from "@/lib/helpers/scrollToTop";
 import { postStudent } from "@/lib/services/studentFeedback/studentFeedback";
+import SuccessModal from "@/app/components/SuccessModal";
+import { STUDENT } from "@/lib/constants";
+import Loader from "@/app/components/Loader/Loader";
 
 const FeedStu = () => {
-  const STUDENT = {
-    enrollmentUuid: "",
-    name: "",
-    email: "",
-    phone: "",
-    gender: "",
-    department: "",
-    semester: "",
-    feedback: "",
-    collegeName: "" // Add collegeName field to the form data
-  };
 
   const [studentData, setStudentData] = useState(STUDENT);
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); 
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -42,7 +35,7 @@ const FeedStu = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     // Validate form fields before submission
     const validationErrors = {};
     // Define regex patterns for validation
@@ -86,16 +79,13 @@ const FeedStu = () => {
     // If there are no validation errors, submit the form
     if (Object.keys(validationErrors).length === 0) {
       try {
-        setIsLoading(true);
         // Implement the postStudent function to post student data to the server
         const res = await postStudent(studentData);
         if (res) {
+         
+          setStudentData(STUDENT);
           setIsLoading(false);
-          setError({
-            msg: SUCCESS_MSG(studentData.name),
-            type: "success",
-          });
-          setStudentData(STUDENT); // Reset the form after successful submission
+          setIsSuccessModalOpen(true); // Reset the form after successful submission
           scrollToTop();
         }
       } catch (error) {
@@ -107,9 +97,20 @@ const FeedStu = () => {
       setError({ msg: "Please fix the errors in the form.", type: "error" });
     }
   };
+  const handleCloseModal = () => {
+    setIsSuccessModalOpen(false); // Close modal
+  };
+
 
   return (
+
+    <>
+    {isLoading ? (
+      <Loader />
+    ) : (
+      <>
     <div className="w-9/12 mx-auto mt-10 p-4 my-10">
+       <SuccessModal isOpen={isSuccessModalOpen} onClose={handleCloseModal} /> {/* Render the SuccessModal component */}
       <h1 className="my-4 text-3xl font-bold">Student Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
@@ -313,6 +314,9 @@ const FeedStu = () => {
         </div>
       </form>
     </div>
+    </>
+    )}
+    </>
   );
 };
 

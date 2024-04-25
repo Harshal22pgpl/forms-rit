@@ -2,10 +2,18 @@
 import React, { useState } from "react";
 import { postFaculty } from "@/lib/services/facultyFeedback/facultyFeedback";
 import { FACULTY } from "@/lib/constants/index";
+import SuccessModal from "@/app/components/SuccessModal";
+import Loader from "@/app/components/Loader/Loader";
 const FacultyFeedbackForm = () => {
 
   const [formData, setFormData] = useState(FACULTY)
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,6 +25,7 @@ const FacultyFeedbackForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     // Validate form fields before submission
     const validationErrors = {};
     // Define regex patterns for validation
@@ -68,10 +77,13 @@ if (formData.feedback.trim() === "") {
         console.log(res); // Handle API response as needed
 
         // Reset the form after submission
-        setFormData(FACULTY); // Reset form data to initial state
+        setFormData(FACULTY);
+        setIsLoading(false) 
+        setShowSuccessModal(true);// Reset form data to initial state
       } catch (error) {
         console.error("Error posting faculty feedback:", error);
         // Handle error appropriately
+        setIsLoading(false)
       }
     }
   
@@ -79,7 +91,14 @@ if (formData.feedback.trim() === "") {
   }
 
   return (
+
+    <>
+    {isLoading ? (
+      <Loader />
+    ) : (
+      <>
     <div className="w-9/12 mx-auto mt-10 p-4 my-10">
+        <SuccessModal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} /> {/* Render the SuccessModal component */}
       <h1 className="my-4 text-3xl font-bold">Faculty Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
@@ -280,6 +299,25 @@ if (formData.feedback.trim() === "") {
             <p className="text-red-500">{errors.feedback}</p>
           )}
         </div>
+        <div className="p-3">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+             College Name
+            </label>
+            <input
+              type="text"
+              name="collegeName"
+              id="collegeName"
+              value={formData.collegeName}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
+            )}
+          </div>
         <div>
           <button
             type="submit"
@@ -290,6 +328,9 @@ if (formData.feedback.trim() === "") {
         </div>
       </form>
     </div>
+    </>
+    )}
+    </>
   );
 };
 
