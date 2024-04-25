@@ -14,6 +14,14 @@ export default function Header() {
 
       // Function to format the college name based on the query parameter
       const formatCollegeName = (college) => {
+        // If college is "lnct", return "LNCT INDORE"
+        if (college === "lnct") {
+          return "LNCT INDORE";
+        }
+        // If college is "lncts", return "LNCT (RIT) INDORE"
+        if (college === "lncts") {
+          return "LNCT (RIT) INDORE";
+        }
         // If college contains "-" (e.g., college-lncts), split it and format the name accordingly
         if (college && college.includes("-")) {
           const [collegeCode, collegeName] = college.split("-");
