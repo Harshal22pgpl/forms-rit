@@ -1,11 +1,20 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { GRIEVENCE } from "@/lib/constants";
 import { postGrievence } from "@/lib/services/grievence/grievence";
+import Loader from "@/app/components/Loader/Loader";
+import SuccessModal from '@/app/components/SuccessModal'
 
 const GrievanceForm = () => {
   const [formData, setFormData] = useState(GRIEVENCE);
   const [errors, setErrors] = useState({});
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +31,7 @@ const GrievanceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
 
     const validationErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,14 +75,23 @@ const GrievanceForm = () => {
       const res = await postGrievence(formData);
       console.log(res, "resssssss");
       setFormData(GRIEVENCE);
+      setIsLoading(false);
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error("Error posting grievance:", error);
+      setIsLoading(false);
     }
 
   };
 
   return (
+    <>
+    {isLoading ? (
+      <Loader />
+    ) : (
+      <>
     <div className="w-full max-w-md mx-auto mt-10 p-4 my-10 bg-gray-100 rounded-lg shadow-lg">
+        <SuccessModal isOpen={isSuccessModalOpen} onClose={handleCloseModal} /> {/* Render the SuccessModal component */}
       <h1 className="my-4 text-3xl font-bold text-center text-yellow-700">
         GRIEVENCE Form
       </h1>
@@ -358,6 +376,9 @@ const GrievanceForm = () => {
         </div>
       </form>
     </div>
+    </>
+    )}
+    </>
   );
 };
 
