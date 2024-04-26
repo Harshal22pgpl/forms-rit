@@ -100,7 +100,6 @@ const AntiRaggingForm = () => {
         setIsLoading(false)
       }
     }
-    setIsSubmitting(false)
   };
 
   return (
@@ -243,6 +242,25 @@ const AntiRaggingForm = () => {
                     <p className="text-red-500">{errors.parentPhone}</p>
                   )}
                 </div>
+
+
+                <div>
+                  <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
+              Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-red-500 focus:ring-red-500"
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500">{errors.phone}</p>
+                  )}
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Witness
