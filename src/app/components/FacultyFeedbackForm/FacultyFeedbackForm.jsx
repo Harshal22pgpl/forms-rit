@@ -104,25 +104,7 @@ if (formData.feedback.trim() === "") {
         <div className="grid grid-cols-2 gap-4">
 
           {/* Faculty UUID */}
-          <div className="p-3">
-            <label
-              htmlFor="facultyUuid"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Faculty UUID
-            </label>
-            <input
-              type="text"
-              name="facultyUuid"
-              id="facultyUuid"
-              value={formData.facultyUuid}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
-            />
-            {errors.facultyUuid && (
-              <p className="text-red-500">{errors.facultyUuid}</p>
-            )}
-          </div>
+        
           {/* Faculty Name */}
 
           <div className="p-3">
@@ -142,6 +124,26 @@ if (formData.feedback.trim() === "") {
             />
             {errors.name && (
               <p className="text-red-500">{errors.name}</p>
+            )}
+          </div>
+
+          <div className="p-3">
+            <label
+              htmlFor="facultyUuid"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Designation
+            </label>
+            <input
+              type="text"
+              name="facultyDesignation"
+              id="facultyDesignation"
+              value={formData.facultyDesignation}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.facultyUuid && (
+              <p className="text-red-500">{errors.facultyUuid}</p>
             )}
           </div>
           {/* Gender */}
@@ -170,25 +172,7 @@ if (formData.feedback.trim() === "") {
           </div>
 
           {/* Aadhar Number */}
-          <div className="p-3">
-            <label
-              htmlFor="aadharNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Aadhar Number
-            </label>
-            <input
-              type="text"
-              name="aadharNumber"
-              id="aadharNumber"
-              value={formData.aadharNumber}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
-            />
-            {errors.aadharNumber && (
-              <p className="text-red-500">{errors.aadharNumber}</p>
-            )}
-          </div>
+         
           {/* Mobile Number */}
 
           <div className="p-3">
@@ -231,53 +215,28 @@ if (formData.feedback.trim() === "") {
             )}
           </div>
           {/* Qualification */}
-          <div className="p-3">
-            <label
-              htmlFor="qualification"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Qualification
-            </label>
-            <select
-              id="qualification"
-              name="qualification"
-              value={formData.qualification}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
-            >
-              <option value="">Select Qualification</option>
-              <option value="btech">B.Tech</option>
-              <option value="mtech">M.Tech</option>
-              <option value="phd">PhD</option>
-            </select>
-            {errors.qualification && (
-              <p className="text-red-500">{errors.qualification}</p>
-            )}
-          </div>
+         
           {/* Employment Type */}
           <div className="p-3">
             <label
-              htmlFor="typeOfEmployment"
+              htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              Type of Employment
+             College Name
             </label>
-            <select
-              id="typeOfEmployment"
-              name="typeOfEmployment"
-              value={formData.typeOfEmployment}
+            <input
+              type="text"
+              name="collegeName"
+              id="collegeName"
+              value={formData.collegeName}
               onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
-            >
-              <option value="">Select Employment Type</option>
-              <option value="regular">Regular</option>
-              <option value="contract">Contract</option>
-              <option value="guest">Guest Lecturer</option>
-            </select>
-            {errors.typeOfEmployment && (
-              <p className="text-red-500">{errors.typeOfEmployment}</p>
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
             )}
           </div>
+          
         </div>
         {/* Feedback */}
         <div className="p-3">
@@ -299,25 +258,7 @@ if (formData.feedback.trim() === "") {
             <p className="text-red-500">{errors.feedback}</p>
           )}
         </div>
-        <div className="p-3">
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-             College Name
-            </label>
-            <input
-              type="text"
-              name="collegeName"
-              id="collegeName"
-              value={formData.collegeName}
-              onChange={handleChange}
-              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
-            />
-            {errors.collegeName && (
-              <p className="text-red-500">{errors.collegeName}</p>
-            )}
-          </div>
+       
         <div>
           <button
             type="submit"

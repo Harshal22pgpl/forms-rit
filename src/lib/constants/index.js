@@ -18,7 +18,7 @@ export const STUDENT = {
 export const ERR_MSG_PREFIX = "The following fields are blank:";
 export const ALERT_TIMEOUT = 3000;
 export const FACULTY = {
-    facultyUuid: "",
+    facultyDesignation: "",
     name: "",
     email: "",
     phone: "",
