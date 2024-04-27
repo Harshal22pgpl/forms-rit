@@ -25,6 +25,7 @@ const FacultyFeedbackForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     setIsLoading(true)
     // Validate form fields before submission
     const validationErrors = {};
@@ -66,6 +67,7 @@ if (formData.typeOfEmployment.trim() === "") {
 if (formData.feedback.trim() === "") {
   validationErrors.feedback = "Please provide feedback.";
 }
+
 
     
     // Update errors state with validation results
@@ -229,6 +231,26 @@ if (formData.feedback.trim() === "") {
               name="collegeName"
               id="collegeName"
               value={formData.collegeName}
+              onChange={handleChange}
+              className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
+            )}
+          </div>
+
+          <div className="p-3">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+             Department
+            </label>
+            <input
+              type="text"
+              name="department"
+              id="department"
+              value={formData.department}
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
             />

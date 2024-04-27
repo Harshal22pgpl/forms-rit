@@ -24,8 +24,7 @@ export const FACULTY = {
     phone: "",
     gender: "",
     department: "",
-    qualification: "",
-    typeOfEmployment: "",
+   
     collegeName: "",
     feedback:""
   // OrganizationUuid: ""
