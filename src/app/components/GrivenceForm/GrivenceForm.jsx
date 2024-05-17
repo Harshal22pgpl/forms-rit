@@ -11,6 +11,21 @@ const GrievanceForm = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const collegeName = params.get("college");
+
+    // If collegeName exists in query parameter, set it in studentData
+    if (collegeName) {
+      // Convert collegeName to uppercase before setting it in the state
+      setStudentData({ ...STUDENT, collegeName: collegeName.toUpperCase() });
+    }
+
+    setIsLoading(false);
+  }, []);
+
+
   const handleCloseModal = () => {
     setIsSuccessModalOpen(false);
   };
