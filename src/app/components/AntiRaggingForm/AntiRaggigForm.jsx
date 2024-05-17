@@ -13,6 +13,20 @@ const AntiRaggingForm = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const collegeName = params.get("college");
+
+    // If collegeName exists in query parameter, set it in studentData
+    if (collegeName) {
+      // Convert collegeName to uppercase before setting it in the state
+      setFormData({ ...ANTIRAGGING, collegeName: collegeName.toUpperCase() });
+    }
+
+    setIsLoading(false);
+  }, []);
+
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
   };
