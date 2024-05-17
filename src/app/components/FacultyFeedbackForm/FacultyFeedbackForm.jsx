@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { postFaculty } from "@/lib/services/facultyFeedback/facultyFeedback";
 import { FACULTY } from "@/lib/constants/index";
 import SuccessModal from "@/app/components/SuccessModal";
