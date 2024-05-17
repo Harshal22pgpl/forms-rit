@@ -228,7 +228,7 @@ const AntiRaggingForm = () => {
 
                 <div>
                   <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
-                    Parent&apos;s Phone
+                    Parent&apos;s Mobile Number
                   </label>
                   <input
                     type="text"
@@ -246,7 +246,7 @@ const AntiRaggingForm = () => {
 
                 <div>
                   <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
-              Phone
+              Student Mobile Number
                   </label>
                   <input
                     type="text"

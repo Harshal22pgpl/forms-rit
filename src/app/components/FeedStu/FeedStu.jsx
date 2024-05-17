@@ -187,7 +187,7 @@ const FeedStu = () => {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
-              Phone
+              Mobile Number
             </label>
             <input
               type="text"

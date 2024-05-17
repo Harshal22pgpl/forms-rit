@@ -93,7 +93,7 @@ const GrievanceForm = () => {
     <div className="w-full max-w-md mx-auto mt-10 p-4 my-10 bg-gray-100 rounded-lg shadow-lg">
         <SuccessModal isOpen={isSuccessModalOpen} onClose={handleCloseModal} /> {/* Render the SuccessModal component */}
       <h1 className="my-4 text-3xl font-bold text-center text-yellow-700">
-        GRIEVENCE Form
+        GRIEVANCE Form
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-4">
@@ -157,13 +157,33 @@ const GrievanceForm = () => {
               <p className="text-red-500">{errors.semester}</p>
             )}
           </div>
+
+          <div>
+            <label
+              htmlFor="courseName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Course Name
+            </label>
+            <input
+              type="text"
+              name="courseName"
+              id="courseName"
+              value={formData.courseName}
+              onChange={handleChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
+            />
+            {errors.courseName && (
+              <p className="text-red-500">{errors.courseName}</p>
+            )}
+          </div>
           {/* Phone No */}
           <div>
             <label
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700"
             >
-              Phone No
+              Mobile No
             </label>
             <input
               type="text"
@@ -197,6 +217,28 @@ const GrievanceForm = () => {
               <p className="text-red-500">{errors.email}</p>
             )}
           </div>
+
+           {/* College Name */}
+           <div>
+            <label
+              htmlFor="collegeName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              College Name
+            </label>
+            <input
+              type="text"
+              name="collegeName"
+              id="collegeName"
+              value={formData.collegeName}
+              onChange={handleChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
+            />
+            {errors.collegeName && (
+              <p className="text-red-500">{errors.collegeName}</p>
+            )}
+          </div>
+
           {/* Type of GRIEVENCE */}
 
           <div>
@@ -323,46 +365,9 @@ const GrievanceForm = () => {
               <p className="text-red-500">{errors.feedback}</p>
             )}
           </div>
-          {/* College Name */}
-          <div>
-            <label
-              htmlFor="collegeName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              College Name
-            </label>
-            <input
-              type="text"
-              name="collegeName"
-              id="collegeName"
-              value={formData.collegeName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
-            />
-            {errors.collegeName && (
-              <p className="text-red-500">{errors.collegeName}</p>
-            )}
-          </div>
+         
 
-          <div>
-            <label
-              htmlFor="courseName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Course Name
-            </label>
-            <input
-              type="text"
-              name="courseName"
-              id="courseName"
-              value={formData.courseName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-500 focus:ring-yellow-500"
-            />
-            {errors.courseName && (
-              <p className="text-red-500">{errors.courseName}</p>
-            )}
-          </div>
+        
         </div>
         {/* Submit Button */}
         <div>
