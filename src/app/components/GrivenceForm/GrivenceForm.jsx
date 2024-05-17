@@ -19,7 +19,7 @@ const GrievanceForm = () => {
     // If collegeName exists in query parameter, set it in studentData
     if (collegeName) {
       // Convert collegeName to uppercase before setting it in the state
-      setStudentData({ ...STUDENT, collegeName: collegeName.toUpperCase() });
+      setFormData({ ...GRIEVENCE, collegeName: collegeName.toUpperCase() });
     }
 
     setIsLoading(false);
