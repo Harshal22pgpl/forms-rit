@@ -3,7 +3,6 @@ import { ANTIRAGGING } from "@/lib/constants";
 import React, { useEffect, useState } from "react";
 import { postAntiRagging } from "@/lib/services/Anti-Ragging/Anti-Ragging";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
 import Loader from "@/app/components/Loader/Loader";
 import SuccessModal from "@/app/components/SuccessModal";
 
