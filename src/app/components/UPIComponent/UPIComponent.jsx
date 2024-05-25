@@ -3,7 +3,7 @@ import React from 'react';
 
 const UPIComponent = () => {
   const dummyUpiId = 'dummy@upi';
-  const dummyQrCode = '/qrcode_112197930_6fefcc4e0455484caf4d9a0f515d5eea.png'; // Replace with an actual path to the QR code image
+  const dummyQrCode = '/qr'; // Replace with an actual path to the QR code image
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto mt-8">
