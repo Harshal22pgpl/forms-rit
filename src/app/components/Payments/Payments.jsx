@@ -1,4 +1,3 @@
-// pages/payment.js
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -56,10 +55,11 @@ const PaymentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const queryParams = `?collegeName=${formData.collegeName}`;
       if (formData.paymentMethod === 'upi') {
-        router.push('/UPIComponent');
+        router.push(`/UPIComponent${queryParams}`);
       } else if (formData.paymentMethod === 'bank') {
-        router.push('/NetBankingComponent');
+        router.push(`/NetBankingComponent${queryParams}`);
       }
     }
   };
@@ -72,11 +72,11 @@ const PaymentForm = () => {
           <div className="mb-4">
             <label className="block text-gray-700">Name</label>
             <input
-   type="text"
-   name="name"
-   value={formData.name}
-   onChange={handleChange}
-   className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full p-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
             />
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
@@ -104,24 +104,32 @@ const PaymentForm = () => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Year</label>
-            <input
-              type="number"
+            <select
               name="year"
               value={formData.year}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} rounded mt-1`}
-            />
+              className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
+            >
+              <option value="">Select Year</option>
+              {Array.from({ length: 10 }, (_, i) => 2015 + i).map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
             {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Semester</label>
-            <input
-              type="number"
+            <select
               name="semester"
               value={formData.semester}
               onChange={handleChange}
-              className={`w-full p-2 border ${errors.semester ? 'border-red-500' : 'border-gray-300'} rounded mt-1`}
-            />
+              className={`w-full p-2 border ${errors.semester ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
+            >
+              <option value="">Select Semester</option>
+              {Array.from({ length: 8 }, (_, i) => i + 1).map(sem => (
+                <option key={sem} value={sem}>{sem}</option>
+              ))}
+            </select>
             {errors.semester && <p className="text-red-500 text-sm">{errors.semester}</p>}
           </div>
           <div className="mb-4">
