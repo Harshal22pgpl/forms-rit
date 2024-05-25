@@ -1,6 +1,9 @@
 'use client'
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import UPIComponent from '@/app/components/UPIComponent/UPIComponent';
+import NetBankingComponent from '@/app/components/NetBankingComponent/NetBankingComponent';
 
 const PaymentForm = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +17,18 @@ const PaymentForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [collegeName, setCollegeName] = useState('');
+  const [showComponent, setShowComponent] = useState(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const college = searchParams.get('collegeName');
+    if (college) {
+      setCollegeName(college);
+    }
+  }, [searchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,14 +69,17 @@ const PaymentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const queryParams = `?collegeName=${formData.collegeName}`;
-      if (formData.paymentMethod === 'upi') {
-        router.push(`/UPIComponent${queryParams}`);
-      } else if (formData.paymentMethod === 'bank') {
-        router.push(`/NetBankingComponent${queryParams}`);
-      }
+      setShowComponent(true);
     }
   };
+
+  if (showComponent) {
+    if (formData.paymentMethod === 'upi') {
+      return <UPIComponent collegeName={collegeName} />;
+    } else if (formData.paymentMethod === 'bank') {
+      return <NetBankingComponent collegeName={collegeName} />;
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
