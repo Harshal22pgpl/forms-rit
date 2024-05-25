@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import UPIComponent from '@/app/components/UPIComponent/UPIComponent';
 import NetBankingComponent from '@/app/components/NetBankingComponent/NetBankingComponent';
+import { useRouter } from 'next/navigation';
 
 const PaymentForm = () => {
   const [formData, setFormData] = useState({
@@ -17,13 +18,13 @@ const PaymentForm = () => {
   const [errors, setErrors] = useState({});
   const [collegeName, setCollegeName] = useState('');
   const [showComponent, setShowComponent] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const college = params.get('college');
-    console.log(college)
     if (college) {
-      setCollegeName(college.toUpperCase()); // Assuming you want it in uppercase
+      setCollegeName(college.toLowerCase()); // Set collegeName from URL params and convert to lowercase
     }
   }, []);
 
@@ -117,21 +118,20 @@ const PaymentForm = () => {
             {errors.course && <p className="text-red-500 text-sm">{errors.course}</p>}
           </div>
           <div className="mb-4">
-  <label className="block text-gray-700">Year</label>
-  <select
-    name="year"
-    value={formData.year}
-    onChange={handleChange}
-    className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
-  >
-    <option value="">Select Year</option>
-    {['1st Year', '2nd Year', '3rd Year', '4th Year'].map((year, index) => (
-      <option key={index + 1} value={index + 1}>{year}</option>
-    ))}
-  </select>
-  {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
-</div>
-
+            <label className="block text-gray-700">Year</label>
+            <select
+              name="year"
+              value={formData.year}
+              onChange={handleChange}
+              className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
+            >
+              <option value="">Select Year</option>
+              {['1st Year', '2nd Year', '3rd Year', '4th Year'].map((year, index) => (
+                <option key={index + 1} value={index + 1}>{year}</option>
+              ))}
+            </select>
+            {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
+          </div>
           <div className="mb-4">
             <label className="block text-gray-700">Semester</label>
             <select
