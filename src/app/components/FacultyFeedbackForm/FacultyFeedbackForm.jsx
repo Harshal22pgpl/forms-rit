@@ -50,8 +50,8 @@ const FacultyFeedbackForm = () => {
     
     // Validate each field
    // Validate each field
-if (formData.facultyUuid.trim() === "") {
-  validationErrors.facultyUuid = "Please enter faculty ID.";
+if (formData.facultyDesignation.trim() === "") {
+  validationErrors.facultyDesignation = "Please enter faculty ID.";
 }
 if (formData.name.trim() === "") {
   validationErrors.name = "Please enter faculty name.";
@@ -72,12 +72,6 @@ if (formData.phone.trim() === "") {
 if (!emailRegex.test(formData.email.trim())) {
   validationErrors.email = "Please enter a valid email address.";
 }
-if (formData.qualification.trim() === "") {
-  validationErrors.qualification = "Please select qualification.";
-}
-if (formData.typeOfEmployment.trim() === "") {
-  validationErrors.typeOfEmployment = "Please select employment type.";
-}
 if (formData.feedback.trim() === "") {
   validationErrors.feedback = "Please provide feedback.";
 }
@@ -88,20 +82,21 @@ if (formData.feedback.trim() === "") {
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       try {
-        // Call API to post faculty feedback
+        // Implement the postStudent function to post student data to the server
         const res = await postFaculty(formData);
-        console.log(res); // Handle API response as needed
-
-        // Reset the form after submission
-        setFormData(FACULTY);
-        setIsLoading(false) 
-        setShowSuccessModal(true);// Reset form data to initial state
+        if (res) {
+          setFormData(FACULTY);
+          setIsLoading(false);
+          setShowSuccessModal(true); // Reset the form after successful submission
+          scrollToTop();
+        }
       } catch (error) {
-        console.error("Error posting faculty feedback:", error);
+        setIsLoading(false);
         // Handle error appropriately
-        setIsLoading(false)
       }
     }
+
+    
   
     // If there are no validation errors, submit the form
   }
@@ -145,7 +140,7 @@ if (formData.feedback.trim() === "") {
 
           <div className="p-3">
             <label
-              htmlFor="facultyUuid"
+              htmlFor="facultyDesignation"
               className="block text-sm font-medium text-gray-700"
             >
               Designation
@@ -158,8 +153,8 @@ if (formData.feedback.trim() === "") {
               onChange={handleChange}
               className="mt-1 block outline-none border-b-2 border-black w-full rounded-md shadow-sm focus:border-green-500 focus:ring-green-500"
             />
-            {errors.facultyUuid && (
-              <p className="text-red-500">{errors.facultyUuid}</p>
+            {errors.facultyDesignation && (
+              <p className="text-red-500">{errors.facultyDesignation}</p>
             )}
           </div>
           {/* Gender */}
