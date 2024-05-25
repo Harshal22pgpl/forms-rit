@@ -1,6 +1,8 @@
 'use client'
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import UPIComponent from '@/app/components/UPIComponent/UPIComponent';
+import NetBankingComponent from '@/app/components/NetBankingComponent/NetBankingComponent';
+import { useRouter } from 'next/navigation';
 
 const PaymentForm = () => {
   const [formData, setFormData] = useState({
@@ -10,15 +12,21 @@ const PaymentForm = () => {
     year: '',
     semester: '',
     amount: '',
-    paymentMethod: '' // New state for payment method
+    paymentMethod: ''
   });
 
   const [errors, setErrors] = useState({});
+  const [collegeName, setCollegeName] = useState('');
+  const [showComponent, setShowComponent] = useState(false);
   const router = useRouter();
 
-  const params = new URLSearchParams(window.location.search);
-    const collegeName = params.get("college");
-  console.log(collegeName,"kkkkkkk");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const college = params.get('college');
+    if (college) {
+      setCollegeName(college.toLowerCase()); // Set collegeName from URL params and convert to lowercase
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +42,7 @@ const PaymentForm = () => {
       newErrors.name = 'Name is required';
     }
     if (!nameRegex.test(formData.fathersName)) {
-      newErrors.fathersName = 'Father\'s Name is required';
+      newErrors.fathersName = "Father's Name is required";
     }
     if (!nameRegex.test(formData.course)) {
       newErrors.course = 'Course is required';
@@ -59,14 +67,17 @@ const PaymentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const queryParams = `?collegeName=${formData.collegeName}`;
-      if (formData.paymentMethod === 'upi') {
-        router.push(`/UPIComponent${queryParams}`);
-      } else if (formData.paymentMethod === 'bank') {
-        router.push(`/NetBankingComponent${queryParams}`);
-      }
+      setShowComponent(true);
     }
   };
+
+  if (showComponent) {
+    if (formData.paymentMethod === 'upi') {
+      return <UPIComponent collegeName={collegeName} />;
+    } else if (formData.paymentMethod === 'bank') {
+      return <NetBankingComponent collegeName={collegeName} />;
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -115,8 +126,8 @@ const PaymentForm = () => {
               className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
             >
               <option value="">Select Year</option>
-              {Array.from({ length: 10 }, (_, i) => 2015 + i).map(year => (
-                <option key={year} value={year}>{year}</option>
+              {['1st Year', '2nd Year', '3rd Year', '4th Year'].map((year, index) => (
+                <option key={index + 1} value={index + 1}>{year}</option>
               ))}
             </select>
             {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
