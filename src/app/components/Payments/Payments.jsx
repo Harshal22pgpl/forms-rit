@@ -84,7 +84,7 @@ const PaymentForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-14 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Payment Form</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Digital payment for all financial transactions</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
           <div className="mb-4">
             <label className="block text-gray-700">Name</label>
@@ -120,20 +120,21 @@ const PaymentForm = () => {
             {errors.course && <p className="text-red-500 text-sm">{errors.course}</p>}
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Year</label>
-            <select
-              name="year"
-              value={formData.year}
-              onChange={handleChange}
-              className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
-            >
-              <option value="">Select Year</option>
-              {Array.from({ length: 10 }, (_, i) => 2015 + i).map(year => (
-                <option key={year} value={year}>{year}</option>
-              ))}
-            </select>
-            {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
-          </div>
+  <label className="block text-gray-700">Year</label>
+  <select
+    name="year"
+    value={formData.year}
+    onChange={handleChange}
+    className={`w-full p-2 border ${errors.year ? 'border-red-500' : 'border-gray-300'} border-2 rounded mt-1`}
+  >
+    <option value="">Select Year</option>
+    {['1st Year', '2nd Year', '3rd Year', '4th Year'].map((year, index) => (
+      <option key={index + 1} value={index + 1}>{year}</option>
+    ))}
+  </select>
+  {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
+</div>
+
           <div className="mb-4">
             <label className="block text-gray-700">Semester</label>
             <select
