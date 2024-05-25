@@ -38,8 +38,8 @@ export default function Header() {
 
   return (
     <div className="px-20 py-2 flex gap-10 items-center">
-      <div className="w-[370px] h-[120px] relative">
-        <Image src="/logo1.png" alt="logo" width={370} height={120} />
+      <div className="w-[370px] h-[110px] relative">
+        <Image src="/logo1.png" alt="logo" width={300} height={120} />
       </div>
       <h1 className="text-4xl font-bold text-blue-600">
         {/* Render the college name obtained from URL search parameters */}
