@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const PaymentForm = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,10 @@ const PaymentForm = () => {
 
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  const params = new URLSearchParams(window.location.search);
+    const collegeName = params.get("college");
+  console.log(collegeName,"kkkkkkk");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
