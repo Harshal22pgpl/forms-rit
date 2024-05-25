@@ -21,6 +21,7 @@ const PaymentForm = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const college = params.get('college');
+    console.log(college)
     if (college) {
       setCollegeName(college.toUpperCase()); // Assuming you want it in uppercase
     }
