@@ -1,5 +1,5 @@
-import { handleError } from "@/app/lib/helpers/handleErrors"
-import { api } from "@/app/lib/middleware/apiInceptor"
+import { handleError } from "@/lib/helpers/handleErrors"
+import { api } from "@/lib/middleware/apiInceptors"
 import { IMG_UPLOAD } from ".."
 
 
