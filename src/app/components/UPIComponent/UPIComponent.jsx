@@ -151,7 +151,7 @@ const UPIComponent = ({ collegeName }) => {
                 {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Father's Name</label>
+                <label className="block text-gray-700">Fathers Name</label>
                 <input
                   type="text"
                   name="fatherName"
