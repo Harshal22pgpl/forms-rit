@@ -56,6 +56,16 @@ export const ANTIRAGGING = {
     collegeName: ""
 }
 
+export const VERIFYFORM = {
+    enrollmentNumber: "",
+    fullName: " ",
+    fatherName: "",
+    courseName: "",
+    year: "",
+    semester: "",
+    transactionId: "",
+    transactionProof: ""
+    }
 
 
 export const ADMIN ='ADMIN'
