@@ -1,13 +1,16 @@
-// components/NetBankingComponent.js
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { uploadImg } from '@/lib/services/files/files';
+import { postVerifyPayment } from '@/lib/services/verifyForm/verifyForm';
+import Loader from '@/app/components/Loader/Loader';
 
 const NetBankingComponent = () => {
-
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setError] = useState({ msg: "", type: "" });
+  const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -18,12 +21,16 @@ const NetBankingComponent = () => {
     year: '',
     semester: '',
     transactionId: '',
-    transactionProof: ''
+    transactionProof: null // Change to null to handle file upload
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === 'transactionProof') {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const validateForm = () => {
@@ -52,18 +59,61 @@ const NetBankingComponent = () => {
       newErrors.transactionId = 'Transaction ID is required';
     }
     if (!formData.transactionProof) {
-      newErrors.transactionProof = 'Transaction Proof URL is required';
+      newErrors.transactionProof = 'Transaction Proof is required';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission here, e.g., send data to server
-      console.log('Form data:', formData);
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setError({ msg: "", type: "" });
+    setIsSuccess(false);
+
+    try {
+      // Upload image
+      const imgRes = await uploadImg({ img: formData.transactionProof, category: "news" });
+      if (!imgRes) {
+        throw new Error("Image upload failed");
+      }
+
+      // Add payment data
+      const paymentData = {
+        enrollmentNumber: formData.enrollmentNumber,
+        fullName: formData.fullName,
+        fatherName: formData.fatherName,
+        courseName: formData.courseName,
+        year: formData.year,
+        semester: formData.semester,
+        transactionId: formData.transactionId,
+        transactionProof: imgRes,
+      };
+
+      await postVerifyPayment(paymentData);
+
+      setIsLoading(false);
+      setIsSuccess(true);
+
+      // Clear form data
+      setFormData({
+        enrollmentNumber: '',
+        fullName: '',
+        fatherName: '',
+        courseName: '',
+        year: '',
+        semester: '',
+        transactionId: '',
+        transactionProof: null
+      });
+
+      console.log('Form submitted successfully');
+    } catch (error) {
+      setIsLoading(false);
+      setError({ msg: error.message || "An error occurred", type: "error" });
     }
   };
 
@@ -74,10 +124,10 @@ const NetBankingComponent = () => {
   return (
     <div className="flex flex-col md:flex-row justify-center">
       {/* Payment Form */}
-
       <div className="min-h-screen flex justify-center bg-gray-100">
         <div className="bg-white p-14 rounded-lg shadow-lg w-full max-w-2xl">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Payment Form</h2>
+          {isSuccess && <p className="text-green-500 mb-4">Form submitted successfully!</p>}
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
             {/* First Column */}
             <div>
@@ -185,6 +235,8 @@ const NetBankingComponent = () => {
               </button>
             </div>
           </form>
+          {isLoading && <Loader />}
+          {hasError.msg && <p className={`text-${hasError.type}-500 mt-4`}>{hasError.msg}</p>}
         </div>
       </div>
 

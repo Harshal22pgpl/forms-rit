@@ -11,6 +11,7 @@ const UPIComponent = ({ collegeName }) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setError] = useState({ msg: "", type: "" });
+  const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -72,6 +73,7 @@ const UPIComponent = ({ collegeName }) => {
 
     setIsLoading(true);
     setError({ msg: "", type: "" });
+    setIsSuccess(false);
 
     try {
       // Upload image
@@ -95,10 +97,21 @@ const UPIComponent = ({ collegeName }) => {
       await postVerifyPayment(newsData);
 
       setIsLoading(false);
-      // Handle successful form submission, e.g., show a success message or redirect
-      console.log('Form submitted successfully');
-      router.push('/success-page'); // Replace with your success page route
+      setIsSuccess(true);
 
+      // Clear form data
+      setFormData({
+        enrollmentNumber: '',
+        fullName: '',
+        fatherName: '',
+        courseName: '',
+        year: '',
+        semester: '',
+        transactionId: '',
+        transactionProof: null
+      });
+
+      console.log('Form submitted successfully');
     } catch (error) {
       setIsLoading(false);
       setError({ msg: error.message || "An error occurred", type: "error" });
@@ -126,6 +139,7 @@ const UPIComponent = ({ collegeName }) => {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-14 rounded-lg shadow-lg w-full max-w-2xl">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Payment Form</h2>
+          {isSuccess && <p className="text-green-500 mb-4">Form submitted successfully!</p>}
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
             <div>
               <div className="mb-4">
