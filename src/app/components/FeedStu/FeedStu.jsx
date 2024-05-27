@@ -12,7 +12,7 @@ const FeedStu = () => {
   const [hasError, setError] = useState({ msg: "", type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -26,6 +26,11 @@ const FeedStu = () => {
 
     setIsLoading(false);
   }, []);
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
 
   const handleChange = (e) => {
     setError({ msg: "", type: "" });
@@ -85,7 +90,7 @@ const FeedStu = () => {
          
           setStudentData(STUDENT);
           setIsLoading(false);
-          setIsSuccessModalOpen(true); // Reset the form after successful submission
+          setShowSuccessModal(true);; // Reset the form after successful submission
           scrollToTop();
         }
       } catch (error) {
@@ -110,7 +115,7 @@ const FeedStu = () => {
     ) : (
       <>
     <div className="w-9/12 mx-auto mt-10 p-4 my-10">
-       <SuccessModal isOpen={isSuccessModalOpen} onClose={handleCloseModal} /> {/* Render the SuccessModal component */}
+    <SuccessModal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} /> {/* Render the SuccessModal component */}
       <h1 className="my-4 text-3xl font-bold">Student Feedback Form</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
